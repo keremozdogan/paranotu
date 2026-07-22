@@ -1,0 +1,209 @@
+---
+title: "Bordro Nasıl Okunur? Brütten Nete Satır Satır"
+description: "Maaş bordrosundaki her kalemin ne anlama geldiği, 2026 asgari ücreti üzerinden gerçek rakamlarla. SGK, işsizlik sigortası, gelir ve damga vergisi nasıl hesaplanıyor?"
+date: 2026-07-17
+category: butce
+author: editor
+featured: false
+keywords:
+  - bordro nasıl okunur
+  - brütten nete hesaplama
+  - maaş kesintileri
+  - SGK işçi payı
+tags:
+  - bordro
+  - başlangıç
+  - kariyer
+---
+
+İlk bordrosunu eline alan çoğu insan aynı şeyi yapıyor: en alttaki net rakama
+bakıp gerisini geçiyor. Oysa aradaki kalemler senin haklarını gösteriyor — ve
+yanlış hesaplandığında fark etmen gereken tek yer orası.
+
+Bu yazıda bordroyu satır satır, 2026 asgari ücreti üzerinden gerçek rakamlarla
+okuyacağız.
+
+<RakamTablosu
+  ids="asgariBrut,sgkIsciPayi,issizlikIsciPayi,toplamKesinti,asgariNet"
+/>
+
+## Temel mantık
+
+Bordro tek bir işlemi gösterir:
+
+```text
+Brüt ücret − yasal kesintiler = Net ücret
+```
+
+Sözleşmende yazan rakam genelde **brüt**tür. Hesabına yatan ise **net**. Aradaki
+farkın tamamı yasal kesintilerdir ve hiçbiri işverenin kârı değildir — devlete
+ve sosyal güvenlik sistemine gider.
+
+## Satır satır: 2026 asgari ücreti örneği
+
+| Kalem | Tutar | Ne işe yarıyor |
+| --- | --- | --- |
+| Brüt ücret | <Rakam id="asgariBrut" bare /> | Sözleşmedeki tutar |
+| SGK işçi payı (%14) | <Rakam id="sgkIsciPayi" bare /> | Emeklilik + sağlık primin |
+| İşsizlik sigortası işçi payı (%1) | <Rakam id="issizlikIsciPayi" bare /> | İşsiz kalırsan ödenek hakkın |
+| **Toplam kesinti** | **<Rakam id="toplamKesinti" bare />** | |
+| **Net ücret** | **<Rakam id="asgariNet" bare />** | Hesabına yatan |
+
+<Yigin
+  baslik="Brütün nereye gittiği (33.030 ₺ üzerinden)"
+  veri="Net ücret:28075.5|SGK işçi payı:4624.2|İşsizlik sig.:330.3"
+  birim="₺"
+  not="Kesintilerin tamamı yasal ve senin sosyal güvenlik haklarını finanse ediyor — işverenin kârı değil."
+/>
+
+<Callout type="info" title="Asgari ücrette vergi durumu">
+  Asgari ücret düzeyindeki kazanç, gelir vergisi ve damga vergisinden istisna
+  tutulmaktadır. Bu yüzden yukarıdaki tabloda vergi satırı görünmüyor. Asgari
+  ücretin üzerinde kazanıyorsan bordronda gelir vergisi ve damga vergisi
+  satırlarını da görürsün.
+</Callout>
+
+## Kalemler ne anlama geliyor?
+
+### SGK işçi payı (%14)
+
+Emeklilik ve sağlık sigortan. Bu kesinti olmadan:
+
+- Emeklilik gün sayın işlemez
+- Sağlık hizmetlerinden yararlanamazsın
+- İş kazası ve meslek hastalığı güvencen olmaz
+
+İşveren de ayrıca kendi payını öder — yani devlete giden toplam prim, senin
+bordroda gördüğünden fazladır.
+
+### İşsizlik sigortası işçi payı (%1)
+
+Kendi isteğinle ayrılmadıysan ve prim şartını sağlıyorsan, işsiz kaldığında
+ödenek almanı sağlayan sigorta. Küçük bir oran ama işlevi büyük.
+
+### Gelir vergisi
+
+Asgari ücretin üzerindeki kazançtan kesilir ve **kümülatif** hesaplanır — yani
+yıl içinde kazandığın toplam tutar arttıkça vergi dilimin yükselir.
+
+Bunun pratik sonucu şu: **maaşın değişmediği halde yılın son aylarında eline
+geçen para azalabilir.** Sebebi zam değil, dilim atlamadır.
+
+### Damga vergisi
+
+Sabit oranlı, düşük tutarlı bir vergidir. Asgari ücrette istisna kapsamındadır.
+
+<AdBanner placement="inArticle" />
+
+## Bordroda mutlaka kontrol etmen gereken 5 şey
+
+**1. SGK gün sayısı.** Ay içinde çalıştığın gün sayısı doğru mu? Eksik
+gösterilmesi, emeklilik gününü doğrudan etkiler.
+
+**2. Brüt ücret sözleşmeyle uyuşuyor mu?** Uyuşmuyorsa hemen İK'ya sor.
+
+**3. SGK matrahı.** Priminin hangi tutar üzerinden yatırıldığı. Gerçek maaşının
+altında bir tutardan yatırılıyorsa (yaygın bir usulsüzlük), emeklilik ve
+işsizlik haklarının tamamı eksik hesaplanıyor demektir.
+
+**4. Fazla mesai ve ek ödemeler.** Yaptığın fazla mesai bordroda görünüyor mu?
+
+**5. İzin bakiyen.** Çoğu bordroda kullanılan/kalan izin günü de yazar.
+
+<Callout type="warning" title="En önemli kontrol">
+  e-Devlet üzerinden <strong>SGK tescil ve hizmet dökümünü</strong> kendin
+  kontrol et. Bordroda görünen ile SGK&apos;ya gerçekten bildirilen farklı
+  olabilir. Bu, sonradan telafisi çok zor bir sorundur ve fark etmenin tek yolu
+  düzenli kontroldür.
+</Callout>
+
+## Brütten nete kabaca nasıl hesaplanır?
+
+Kesin hesap kümülatif vergi matrahına bağlı olduğu için değişkendir, ama mantık
+şu:
+
+1. Brütten **SGK işçi payı (%14)** düşülür
+2. **İşsizlik sigortası işçi payı (%1)** düşülür
+3. Kalan tutar **gelir vergisi matrahı** olur
+4. Matrahtan, içinde bulunduğun dilime göre **gelir vergisi** hesaplanır
+5. **Damga vergisi** düşülür
+6. Asgari ücret düzeyindeki kısma isabet eden vergi **istisna** edilir
+
+Adım 4 ve 6 nedeniyle net maaş, yılın hangi ayında olduğuna göre değişebilir.
+
+## Bordroda görebileceğin diğer kalemler
+
+Asgari ücret örneği sade bir tablo veriyor. Gerçek bordrolarda şu satırlar da
+çıkabiliyor:
+
+| Kalem | Ne demek |
+| --- | --- |
+| Fazla mesai | Normal saatlerin üzerindeki çalışma, zamlı ödenir |
+| Hafta tatili / genel tatil ücreti | Tatilde çalıştıysan ayrı gösterilir |
+| Yol ve yemek yardımı | Nakdi veya ayni; vergi durumu türüne göre değişir |
+| Prim / ikramiye | Dönemsel ek ödemeler |
+| İcra kesintisi | Varsa yasal takip kaynaklı kesinti |
+| BES kesintisi | Otomatik katılım kapsamındaysan |
+| Avans mahsubu | Ay içinde avans aldıysan düşülür |
+
+Bu kalemlerin bir kısmı **SGK matrahına dahil**, bir kısmı değil. Matraha dahil
+olmayan ödemeler emeklilik hesabına yansımaz — yani "eline geçen" artar ama uzun
+vadeli hakkın artmaz. İkisi arasındaki farkı bilmek, iş görüşmesinde teklif
+değerlendirirken işe yarıyor.
+
+<Callout type="tip" title="Teklif değerlendirirken">
+  &quot;Brüt mü net mi?&quot; sorusunu ilk soruda sor. Aynı sayı brüt söylendiğinde
+  ile net söylendiğinde arasında ciddi fark var ve iki taraf farklı şey anladığında
+  sorun işe başladıktan sonra çıkıyor.
+</Callout>
+
+## Sık sorulan: "Maaşım aynı ama elime geçen azaldı, neden?"
+
+Neredeyse her zaman **gelir vergisi dilimi atlaması** yüzünden. Yıl başında
+%15'lik dilimdeyken, kümülatif kazancın arttıkça bir üst dilime geçiyorsun ve
+aynı brütten daha fazla vergi kesiliyor.
+
+Bu bir hata değil, sistemin işleyişi. Ama bütçe planı yapıyorsan bilmen gerekiyor:
+**yılın son çeyreğinde net gelirin düşebilir.**
+
+Bu düşüşü önceden görebilmek bütçe planlaması açısından önemli. Yılın son
+çeyreğinde net gelirin azalacaksa, o dönemin sabit giderlerini buna göre
+ayarlaman gerekiyor — [50/30/20 kuralını uygularken](/blog/asgari-ucretle-50-30-20-kurali)
+oranı yıl ortalamasına göre kurmak daha sağlıklı sonuç veriyor.
+
+## Sık sorulan sorular
+
+### Bordromu alamıyorum, ne yapmalıyım?
+
+Bordro almak yasal hakkın. İşveren vermek zorundadır. Veremiyorsa e-Devlet
+üzerinden SGK hizmet dökümünü kontrol ederek en azından primlerinin yatıp
+yatmadığını görebilirsin.
+
+### SGK primim gerçek maaşımdan düşük gösteriliyor, sorun olur mu?
+
+Evet, ciddi bir sorun. Emeklilik aylığın, işsizlik ödeneğin ve iş göremezlik
+ödemelerinin tamamı bildirilen matrah üzerinden hesaplanıyor. Düşük gösterim,
+bugün eline geçeni değiştirmese bile gelecekteki tüm haklarını küçültüyor.
+Tespit edersen SGK'ya bildirimde bulunabilirsin.
+
+### Net maaşım her ay birkaç lira oynuyor, normal mi?
+
+Genelde normal. Kümülatif vergi matrahı her ay değiştiği için kesinti tutarı da
+küçük farklarla değişebiliyor. Büyük bir düşüş varsa sebebi genelde dilim
+atlamasıdır.
+
+### Brütten nete hesaplayan siteler doğru mu?
+
+Yaklaşık sonuç veriyorlar ama kümülatif matrahını, yan hakları ve istisnaları
+bilmedikleri için birebir tutmayabiliyorlar. Kesin rakam için bordronun kendisi
+esastır.
+
+## Özet
+
+- Sözleşmedeki rakam brüt, hesabına yatan net — fark yasal kesintiler
+- SGK %14 ve işsizlik %1 senin sosyal güvenlik hakların
+- Asgari ücret gelir ve damga vergisinden istisna
+- SGK gün sayısı ve matrahını e-Devlet'ten **kendin doğrula**
+- Yıl sonuna doğru net maaşın azalması genelde dilim atlamasıdır
+
+<Disclaimer />
