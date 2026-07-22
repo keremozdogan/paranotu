@@ -11,14 +11,14 @@
 
 const siteConfig = {
   /* ---------------------------------------------------------------- KİMLİK */
-  name: "BirikimRehberi",
-  shortName: "Birikim",
-  tagline: "Gençler için mikro-birikim ve bütçe rehberi",
+  name: "ParaNotu",
+  shortName: "ParaNotu",
+  tagline: "Finansı sade anlatan notlar",
   description:
-    "Az parayla başlayan büyük alışkanlıklar. Öğrenciler ve yeni çalışanlar için sade bütçe yönetimi, mikro-birikim taktikleri ve finansal okuryazarlık rehberleri.",
+    "Bütçe, birikim, kredi, yatırım ve vergi konularını karmaşık terimlere boğmadan anlatan rehberler. Gerçek rakamlarla, bugün uygulayabileceğin adımlarla.",
 
   /* Canlı domain — sitemap, canonical ve OG etiketleri bunu kullanır. */
-  url: process.env.NEXT_PUBLIC_SITE_URL || "https://birikimrehberi.com",
+  url: process.env.NEXT_PUBLIC_SITE_URL || "https://paranotu.com",
 
   locale: "tr_TR",
   lang: "tr",
@@ -27,8 +27,8 @@ const siteConfig = {
   logo: {
     /* type: "text" → yazı logosu (dosya gerekmez) | "image" → /public içinden */
     type: "text",
-    text: "Birikim",
-    accentText: "Rehberi", // ana renkte vurgulanan kısım
+    text: "Para",
+    accentText: "Notu", // ana renkte vurgulanan kısım
     src: "/logo.svg",
     width: 132,
     height: 32,
@@ -104,7 +104,7 @@ const siteConfig = {
     { label: "Enflasyon", href: "/enflasyon" },
     { label: "Araçlar", href: "/araclar" },
     { label: "Bütçe", href: "/kategori/butce" },
-    { label: "Öğrenci", href: "/kategori/ogrenci" },
+    { label: "Birikim", href: "/kategori/birikim" },
     { label: "Hakkında", href: "/hakkinda" },
   ],
 
@@ -116,7 +116,22 @@ const siteConfig = {
   ],
 
   /* ---------------------------------------------------------- KATEGORİLER */
-  /* slug → görünen ad + kısa açıklama (kategori sayfası SEO metni) */
+  /**
+   * slug → görünen ad + kısa açıklama (kategori sayfası SEO metni)
+   *
+   * ⚠️ KURAL: Buraya eklenen HER kategori için sayfa üretilir
+   * (src/app/kategori/[category]/page.js → generateStaticParams).
+   * İçinde yazı olmayan kategori = boş sayfa = Google'ın "thin content"
+   * saydığı ve AdSense'in reddettiği durum.
+   *
+   * Bu yüzden kategoriyi ÖNCE yazı yazıp SONRA aç.
+   *
+   * YOL HARİTASI — içerik geldikçe eklenecekler:
+   *   { slug: "kredi",     name: "Kredi & Borç" }        ← en çok aranan konu, önce bu
+   *   { slug: "yatirim",   name: "Yatırım 101" }         ← 0 yazı olduğu için kapatıldı
+   *   { slug: "vergi",     name: "Vergi & Bordro" }
+   *   { slug: "emeklilik", name: "Emeklilik & Uzun Vade" }
+   */
   categories: [
     {
       slug: "butce",
@@ -131,12 +146,6 @@ const siteConfig = {
         "Küçük tutarlarla başlayan mikro-birikim yöntemleri, otomatik tasarruf sistemleri ve acil durum fonu kurma.",
     },
     {
-      slug: "yatirim",
-      name: "Yatırım 101",
-      description:
-        "Yeni başlayanlar için risk, faiz, enflasyon ve temel yatırım araçlarının sade anlatımı.",
-    },
-    {
       slug: "ogrenci",
       name: "Öğrenci Finansı",
       description:
@@ -147,10 +156,10 @@ const siteConfig = {
   /* ------------------------------------------------------------- YAZARLAR */
   authors: {
     editor: {
-      name: "Editör",
-      title: "İçerik Ekibi",
+      name: "Kerem Özdoğan",
+      title: "Yazar",
       avatar: "/authors/editor.png",
-      bio: "Finansal okuryazarlığı sade bir dille anlatmaya çalışan küçük bir ekip.",
+      bio: "Yazılım uzmanı. Finansal okuryazarlığa meraklı; birikim ve bütçe konusunda öğrendiklerini sade bir dille anlatıyor.",
     },
   },
   defaultAuthor: "editor",
@@ -158,13 +167,13 @@ const siteConfig = {
   /* --------------------------------------------------------- SOSYAL MEDYA */
   /* Boş bırakılan alanlar arayüzde otomatik gizlenir. */
   social: {
-    twitter: "https://twitter.com/birikimrehberi",
-    twitterHandle: "@birikimrehberi",
-    instagram: "https://instagram.com/birikimrehberi",
+    twitter: "",
+    twitterHandle: "",
+    instagram: "",
     youtube: "",
     linkedin: "",
     github: "",
-    email: "merhaba@birikimrehberi.com",
+    email: "keremozdogannn@gmail.com",
   },
 
   /* -------------------------------------------------------------- REKLAM */
@@ -180,7 +189,7 @@ const siteConfig = {
     provider: "adsense",
     client: process.env.NEXT_PUBLIC_ADSENSE_CLIENT || "",
     /* Placeholder'ları geliştirme sırasında görmek için true bırak. */
-    showPlaceholders: true,
+    showPlaceholders: false,
     slots: {
       headerBelow: "",   // Başlık altı — yatay banner
       inArticle: "",     // Yazı içi — akışkan
@@ -229,13 +238,14 @@ const siteConfig = {
 
   /* ---------------------------------------------------------------- SEO */
   seo: {
-    titleTemplate: "%s | BirikimRehberi",
+    titleTemplate: "%s | ParaNotu",
     defaultKeywords: [
       "bütçe yönetimi",
-      "mikro birikim",
+      "birikim",
       "tasarruf",
       "finansal okuryazarlık",
-      "öğrenci bütçesi",
+      "kişisel finans",
+      "kredi ve borç",
     ],
     /* Yasal uyarı — finans nişinde AdSense/Google için önemli */
     disclaimer:

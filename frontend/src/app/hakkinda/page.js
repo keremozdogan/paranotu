@@ -23,6 +23,35 @@ export default function AboutPage() {
           küçük adımlarla anlatmak.
         </p>
 
+        <h2>Ben kimim?</h2>
+        <p>
+          Merhaba, ben <strong>{siteConfig.authors.editor.name}</strong>. Mesleğim
+          yazılım — işim gereği günlerimi karmaşık sistemleri anlaşılır parçalara
+          ayırarak geçiriyorum. Bir süredir aynı şeyi kişisel finans için yapmaya
+          çalışıyorum: konuyu ürkütücü terimlerden arındırıp, insanın gerçekten
+          uygulayabileceği adımlara indirgemek.
+        </p>
+        <p>
+          Bu merak yeni değil. Çocukken bir bisiklet istemiştim; ailemden isteyip
+          almak yerine biriktirmeye karar verdim. Harçlığımı ikiye böldüm — yarısı
+          günlük harcamalara, yarısı bir kutuya. Aylar sürdü ve o süreçte asıl
+          öğrendiğim şey bisikletin kendisi değildi: <em>küçük ama düzenli bir
+          tutarın, büyük ama düzensiz bir niyetten daha güçlü olduğuydu.</em> O
+          bisikleti aldığımda kazandığım asıl şey, bir alışkanlıktı.
+        </p>
+        <p>
+          Bu sitede yaptığım şey de aslında bu: kendi öğrendiklerimi, denediğim
+          yöntemleri ve yolda karşılaştığım hataları yazıya dökmek. İnsanların
+          işine yarayan bir şey üretmek, bence yapılabilecek en keyifli işlerden
+          biri — birinin bütçesini biraz olsun rahatlatabildiysem, bu yazılar
+          amacına ulaşmış demektir.
+        </p>
+        <p>
+          Finans danışmanı değilim ve öyleymiş gibi de davranmıyorum. Burada
+          okuduğun her şey, araştırılmış ve sade anlatılmış <em>bilgi</em>; kararı
+          her zaman sen vereceksin.
+        </p>
+
         <h2>Kimin için?</h2>
         <p>
           Öğrenciler, yeni mezunlar ve ilk maaşını almış herkes. Yani birikimin
