@@ -219,9 +219,9 @@ const siteConfig = {
   /* --------------------------------------------------------- ÖZELLİKLER */
   /* Niş değişince gereksiz modülleri tek satırda kapat. */
   features: {
-    newsletter: true,      // Bülten aboneliği (.NET API)
+    newsletter: false,     // Bülten aboneliği (.NET API) — backend yayına alınınca true yap
     comments: false,       // Yorumlar (.NET API)
-    liveRates: true,       // Canlı döviz/altın kuru widget'ı — finans nişine özel
+    liveRates: false,      // Canlı döviz/altın kuru widget'ı — backend yayına alınınca true yap
     readingTime: true,
     tableOfContents: true,
     relatedPosts: true,
