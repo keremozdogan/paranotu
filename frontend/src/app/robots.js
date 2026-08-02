@@ -23,14 +23,19 @@ export default function robots() {
       {
         userAgent: "*",
         allow: "/",
-        /* Next.js iç yolları ve API uçları taranmasın. */
-        disallow: ["/api/", "/_next/", "/404", "/500"],
+        /* Next.js iç yolları, API uçları ve parametreli arama sonuçları
+           taranmasın. Query parametreli URL'ler indekslenirse aynı içerik
+           onlarca adresten görünür (duplicate content). */
+        disallow: ["/api/", "/_next/", "/404", "/500", "/*?q=", "/*?sayfa=", "/*?page="],
       },
       /* AdSense tarayıcısının reklam uyumluluğu için siteyi görmesi gerekir. */
       { userAgent: "Mediapartners-Google", allow: "/" },
       { userAgent: "AdsBot-Google", allow: "/" },
+      /* Google Haberler tarayıcısı — haber bölümüne tam erişim. */
+      { userAgent: "Googlebot-News", allow: "/" },
     ],
-    sitemap: absoluteUrl("/sitemap.xml"),
+    /* İki sitemap: genel + Google News (son 48 saat). */
+    sitemap: [absoluteUrl("/sitemap.xml"), absoluteUrl("/news-sitemap.xml")],
     host: siteConfig.url,
   };
 }

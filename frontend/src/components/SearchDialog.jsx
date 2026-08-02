@@ -9,7 +9,7 @@
  */
 
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 
 /** Türkçe karakterleri normalize ederek karşılaştırma yapar. */
 function normalize(value) {
@@ -24,6 +24,13 @@ export default function SearchDialog({ index = [] }) {
   const [query, setQuery] = useState("");
   const inputRef = useRef(null);
 
+  /* Kapatma tek yerden — hem paneli kapatır hem aramayı temizler,
+     böylece bir sonraki açılış boş kutuyla başlar. */
+  const close = useCallback(() => {
+    setOpen(false);
+    setQuery("");
+  }, []);
+
   /* Ctrl/Cmd + K ile aç */
   useEffect(() => {
     const onKey = (e) => {
@@ -31,15 +38,17 @@ export default function SearchDialog({ index = [] }) {
         e.preventDefault();
         setOpen(true);
       }
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") close();
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, []);
+  }, [close]);
 
+  /* Açılınca arama alanına odaklan.
+     Aramayı temizleme işi `close()` içine taşındı — effect gövdesinde
+     koşulsuz setState cascading render tetikliyordu. */
   useEffect(() => {
     if (open) inputRef.current?.focus();
-    else setQuery("");
   }, [open]);
 
   const results = useMemo(() => {
@@ -84,7 +93,7 @@ export default function SearchDialog({ index = [] }) {
       {open ? (
         <div
           className="fixed inset-0 z-[60] flex items-start justify-center bg-black/40 p-4 pt-[10vh] backdrop-blur-sm"
-          onClick={() => setOpen(false)}
+          onClick={close}
           role="presentation"
         >
           <div
@@ -117,13 +126,19 @@ export default function SearchDialog({ index = [] }) {
 
               {results.map((post) => (
                 <Link
-                  key={post.slug}
-                  href={`/blog/${post.slug}`}
-                  onClick={() => setOpen(false)}
+                  key={post.href ?? post.slug}
+                  /* Yol indeksten gelir — bileşen haber/rehber ayrımını bilmez. */
+                  href={post.href ?? `/blog/${post.slug}`}
+                  onClick={close}
                   className="block border-b border-line px-4 py-3 last:border-b-0 hover:bg-subtle"
                 >
-                  <span className="block text-sm font-semibold text-ink">
-                    {post.title}
+                  <span className="flex items-baseline gap-2">
+                    {post.kind ? (
+                      <span className="shrink-0 rounded-brand bg-subtle px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wide text-muted">
+                        {post.kind}
+                      </span>
+                    ) : null}
+                    <span className="text-sm font-semibold text-ink">{post.title}</span>
                   </span>
                   <span className="mt-0.5 block line-clamp-1 text-xs text-muted">
                     {post.description}

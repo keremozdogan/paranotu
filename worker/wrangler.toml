@@ -1,0 +1,112 @@
+#===============================================================================
+#  ParaNotu Ingestion Worker
+#===============================================================================
+#  Bu Worker SİTEYİ SUNMAZ. Site Vercel'de kalır ve dokunulmaz.
+#  Worker yalnızca arka planda veri toplar:
+#    Cron → kaynakları çek → Queue → normalize/dedup/cluster → D1
+#
+#  Next.js tarafı D1'i Cloudflare D1 HTTP API üzerinden SALT OKUNUR okur
+#  (frontend/src/lib/d1.js). Böylece Vercel deployment'ı hiç değişmez.
+#===============================================================================
+
+name = "paranotu-ingest"
+main = "src/index.js"
+compatibility_date = "2026-07-01"
+compatibility_flags = ["nodejs_compat"]
+
+#-------------------------------------------------------------------------------
+#  CRON TETİKLEYİCİLERİ
+#-------------------------------------------------------------------------------
+#  ⚠️ TÜM CRON İFADELERİ UTC'DİR. Türkiye UTC+3'tür — yaz saati uygulaması
+#  YOKTUR, yani fark yıl boyunca sabit 3 saattir.
+#
+#  Dönüşüm:  TSİ 10:00 → UTC 07:00
+#
+#  Kritik zamanlama notu:
+#    TÜİK enflasyonu TSİ 10:00'da (UTC 07:00) açıklıyor. Ayın 3'ünde
+#    UTC 07:00–08:00 arasında 5 dakikada bir kontrol ediyoruz ki veri
+#    çıktığı anda yakalansın.
+#-------------------------------------------------------------------------------
+[triggers]
+crons = [
+  # Resmî kaynaklar (TCMB, TÜİK, Resmî Gazete, KAP) — 10 dakikada bir
+  "*/10 * * * *",
+
+  # Genel ekonomi haber kaynakları — 20 dakikada bir
+  "*/20 * * * *",
+
+  # Ayın 3'ü, UTC 07:00-07:55 → TSİ 10:00-10:55 (TÜFE açıklama penceresi)
+  "*/5 7 3 * *",
+
+  # Evergreen tazelik kontrolü — her gün UTC 02:00 (TSİ 05:00)
+  "0 2 * * *",
+
+  # Aylık rehber kontrolü — ayın 1'i UTC 03:00 (TSİ 06:00)
+  "0 3 1 * *",
+]
+
+#-------------------------------------------------------------------------------
+#  D1 VERİTABANI
+#-------------------------------------------------------------------------------
+#  Oluşturma:  npx wrangler d1 create paranotu
+#  Dönen database_id'yi aşağıya yapıştır.
+[[d1_databases]]
+binding = "DB"
+database_name = "paranotu"
+database_id = "PLACEHOLDER_D1_DATABASE_ID"   # ← wrangler d1 create çıktısından
+migrations_dir = "migrations"
+
+#-------------------------------------------------------------------------------
+#  QUEUES
+#-------------------------------------------------------------------------------
+#  Oluşturma:
+#    npx wrangler queues create paranotu-ingest
+#    npx wrangler queues create paranotu-ingest-dlq
+[[queues.producers]]
+binding = "INGEST_QUEUE"
+queue = "paranotu-ingest"
+
+[[queues.consumers]]
+queue = "paranotu-ingest"
+max_batch_size = 25
+max_batch_timeout = 10
+# Geçici hatalarda 3 deneme; sonra ölü mektup kuyruğuna düşer ve
+# ORADA KALIR — sessizce kaybolmaz, incelenebilir.
+max_retries = 3
+dead_letter_queue = "paranotu-ingest-dlq"
+
+# DLQ tüketicisi: başarısız kayıtları sadece loglar ve source_health'e yazar.
+[[queues.consumers]]
+queue = "paranotu-ingest-dlq"
+max_batch_size = 10
+max_batch_timeout = 30
+max_retries = 0
+
+#-------------------------------------------------------------------------------
+#  KV — ana sayfa cache
+#-------------------------------------------------------------------------------
+#  Oluşturma:  npx wrangler kv namespace create CACHE
+[[kv_namespaces]]
+binding = "CACHE"
+id = "PLACEHOLDER_KV_NAMESPACE_ID"
+
+#-------------------------------------------------------------------------------
+#  DEĞİŞKENLER
+#-------------------------------------------------------------------------------
+[vars]
+# Kaynak listesi src/sources.js içinde; buradan açılıp kapatılır.
+ENABLED_SOURCE_GROUPS = "official"
+
+# Bir kaynak üst üste bu kadar hata verirse otomatik devre dışı bırakılır.
+MAX_CONSECUTIVE_FAILURES = "5"
+
+# Ham feed kaydı bu süre sonra 'expired' olur (gün).
+FEED_RETENTION_DAYS = "30"
+
+#-------------------------------------------------------------------------------
+#  GİZLİ DEĞERLER  (vars'a YAZMA — wrangler secret put ile ekle)
+#-------------------------------------------------------------------------------
+#   npx wrangler secret put NEWS_API_KEY
+#   npx wrangler secret put MARKET_DATA_API_KEY
+#   npx wrangler secret put REVALIDATE_TOKEN     # Vercel ISR tetikleme
+#-------------------------------------------------------------------------------

@@ -45,7 +45,9 @@ export default function TableOfContents({ headings = [] }) {
             <a
               href={`#${h.id}`}
               aria-current={activeId === h.id ? "location" : undefined}
-              className={`block border-l-2 py-0.5 pl-3 leading-snug transition-colors ${
+              /* min-h-6 → WCAG 2.5.8 asgari 24px dokunma alanı.
+                 py-0.5 tek başına 21px veriyordu. */
+              className={`flex min-h-6 items-center border-l-2 py-0.5 pl-3 leading-snug transition-colors ${
                 activeId === h.id
                   ? "border-primary-500 font-medium text-primary-700"
                   : "border-transparent text-muted hover:border-line hover:text-ink"

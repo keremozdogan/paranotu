@@ -182,6 +182,63 @@ export function articleJsonLd(post) {
   };
 }
 
+/**
+ * NewsArticle JSON-LD — haber sayfaları için.
+ *
+ * `BlogPosting` yerine `NewsArticle` kullanılır; Google Haberler ve "Top
+ * stories" karuseli bu tipi bekler.
+ *
+ * ⚠️ Structured data SAYFADA GÖRÜNMEYEN bilgi içermemelidir. Bu yüzden
+ * buradaki her alan sayfada da render edilir: başlık, özet, tarihler, yazar,
+ * bölüm, görsel. Görünmeyen alan eklemek Google'ın manuel işlem gerekçesidir.
+ */
+export function newsArticleJsonLd(item) {
+  const url = absoluteUrl(`/haber/${item.section.slug}/${item.slug}`);
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "NewsArticle",
+    headline: item.title,
+    description: item.summary,
+    datePublished: item.publishedAt,
+    dateModified: item.updatedAt ?? item.publishedAt,
+    inLanguage: siteConfig.lang,
+    mainEntityOfPage: { "@type": "WebPage", "@id": url },
+    url,
+    author: {
+      "@type": "Person",
+      name: item.author?.name ?? siteConfig.name,
+      ...(item.author?.id ? { url: absoluteUrl(`/yazarlar/${item.author.id}`) } : {}),
+    },
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      url: siteConfig.url,
+    },
+    /* Google birden fazla en-boy oranı önerir (1:1, 4:3, 16:9).
+       Kendi görselimiz yoksa /og üretimi 16:9 verir. */
+    image: item.image?.src
+      ? [absoluteUrl(item.image.src)]
+      : [absoluteUrl(buildOgPath({ title: item.title, category: item.section?.name }))],
+    articleSection: item.section?.name,
+    ...(item.keywords?.length ? { keywords: item.keywords.join(", ") } : {}),
+    wordCount: item.wordCount,
+    /* Kaynak gösterimi — telif şeffaflığı */
+    ...(item.sourceUrl ? { isBasedOn: item.sourceUrl } : {}),
+    /* Canlı gelişme haberleri için */
+    ...(item.isLive
+      ? {
+          "@type": "NewsArticle",
+          liveBlogUpdate: (item.liveUpdates ?? []).map((u) => ({
+            "@type": "BlogPosting",
+            headline: u.title,
+            datePublished: u.at,
+          })),
+        }
+      : {}),
+  };
+}
+
 /** @param {Array<{name: string, path: string}>} items */
 export function breadcrumbJsonLd(items) {
   return {

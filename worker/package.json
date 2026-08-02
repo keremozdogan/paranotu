@@ -1,0 +1,22 @@
+{
+  "name": "paranotu-ingest",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "ParaNotu veri toplama Worker'ı — cron, queue ve D1. Siteyi sunmaz; site Vercel'de kalır.",
+  "scripts": {
+    "test": "node --test test/*.test.mjs",
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "tail": "wrangler tail",
+    "db:create": "wrangler d1 create paranotu",
+    "db:migrate:local": "wrangler d1 migrations apply paranotu --local",
+    "db:migrate": "wrangler d1 migrations apply paranotu --remote",
+    "db:console": "wrangler d1 execute paranotu --remote --command",
+    "queues:create": "wrangler queues create paranotu-ingest && wrangler queues create paranotu-ingest-dlq",
+    "kv:create": "wrangler kv namespace create CACHE"
+  },
+  "devDependencies": {
+    "wrangler": "^4.20.0"
+  }
+}

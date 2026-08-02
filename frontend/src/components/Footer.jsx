@@ -87,12 +87,15 @@ export default function Footer() {
               <h2 className="text-xs font-bold uppercase tracking-wider text-ink">
                 Kategoriler
               </h2>
-              <ul className="mt-3 space-y-2">
+              <ul className="mt-3 space-y-0.5">
                 {categories.map((cat) => (
                   <li key={cat.slug}>
                     <Link
                       href={`/kategori/${cat.slug}`}
-                      className="text-sm text-muted transition-colors hover:text-primary-600"
+                      /* min-h-9 + inline-flex → mobilde yeterli dokunma alanı
+                         (WCAG 2.5.8). Ayrı satırdaki gezinme bağlantıları
+                         satır içi metin istisnasına girmez. */
+                      className="inline-flex min-h-9 items-center text-sm text-muted transition-colors hover:text-link"
                     >
                       {cat.name}
                       <span className="ml-1 text-xs text-muted/60">({cat.count})</span>
@@ -107,12 +110,12 @@ export default function Footer() {
             <h2 className="text-xs font-bold uppercase tracking-wider text-ink">
               Site
             </h2>
-            <ul className="mt-3 space-y-2">
+            <ul className="mt-3 space-y-0.5">
               {siteConfig.footerNav.map((item) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-sm text-muted transition-colors hover:text-primary-600"
+                    className="inline-flex min-h-9 items-center text-sm text-muted transition-colors hover:text-link"
                   >
                     {item.label}
                   </Link>

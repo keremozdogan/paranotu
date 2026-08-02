@@ -37,11 +37,43 @@
   --color-accent-900: var(--brand-accent-900);
   --color-accent-950: var(--brand-accent-950);
 
+  /* ALTIN — sınırlı editoryal vurgu (son dakika, öne çıkan, canlı) */
+  --color-gold-50: var(--brand-gold-50);
+  --color-gold-100: var(--brand-gold-100);
+  --color-gold-200: var(--brand-gold-200);
+  --color-gold-300: var(--brand-gold-300);
+  --color-gold-400: var(--brand-gold-400);
+  --color-gold-500: var(--brand-gold-500);
+  --color-gold-600: var(--brand-gold-600);
+  --color-gold-700: var(--brand-gold-700);
+  --color-gold-800: var(--brand-gold-800);
+  --color-gold-900: var(--brand-gold-900);
+  --color-gold-950: var(--brand-gold-950);
+
   --color-canvas: var(--brand-bg);
   --color-subtle: var(--brand-bg-subtle);
   --color-line: var(--brand-border);
   --color-ink: var(--brand-text);
   --color-muted: var(--brand-text-muted);
+
+  /* ------------------------------------------------------------------
+     SEMANTİK ROLLER — açık/koyu temada FARKLI değer alırlar.
+     Palet adımı yerine bunları kullan: text-link, text-positive ...
+     ------------------------------------------------------------------ */
+  --color-link: var(--brand-link);
+  --color-link-hover: var(--brand-link-hover);
+  --color-positive: var(--brand-positive);
+  --color-positive-soft: var(--brand-positive-soft);
+  --color-negative: var(--brand-negative);
+  --color-negative-soft: var(--brand-negative-soft);
+  --color-flat: var(--brand-neutral);
+  --color-flat-soft: var(--brand-neutral-soft);
+
+  /* Kurumsal yüzeyler — header, mega menü, footer */
+  --color-chrome: var(--brand-chrome);
+  --color-chrome-text: var(--brand-chrome-text);
+  --color-chrome-muted: var(--brand-chrome-muted);
+  --color-chrome-line: var(--brand-chrome-border);
 
   --radius-brand: var(--brand-radius);
 
@@ -51,12 +83,24 @@
 
 /* Fallback — <ThemeVars /> değerleri gelmeden önceki ilk boyama için. */
 :root {
-  --brand-radius: 0.75rem;
+  --brand-radius: 0.25rem;
   --brand-bg: #ffffff;
-  --brand-bg-subtle: #f8fafc;
-  --brand-border: #e2e8f0;
-  --brand-text: #0f172a;
-  --brand-text-muted: #64748b;
+  --brand-bg-subtle: #f6f7f9;
+  --brand-border: #dfe3e8;
+  --brand-text: #0f1723;
+  --brand-text-muted: #5b6672;
+  --brand-link: #047857;
+  --brand-link-hover: #036148;
+  --brand-positive: #157f4d;
+  --brand-positive-soft: #e8f5ee;
+  --brand-negative: #b3261e;
+  --brand-negative-soft: #fbeceb;
+  --brand-neutral: #5b6672;
+  --brand-neutral-soft: #f0f2f5;
+  --brand-chrome: #0f1c2e;
+  --brand-chrome-text: #e8ecf1;
+  --brand-chrome-muted: #93a3b8;
+  --brand-chrome-border: #1f2f45;
 }
 
 html {
@@ -121,15 +165,17 @@ body {
   margin-bottom: 0.5em;
 }
 
+/* Bağlantılar semantik `--brand-link` rolünü kullanır — koyu temada
+   palet adımı yerine rol değiştiği için kontrast her iki temada da korunur. */
 .prose-site a {
-  color: var(--brand-primary-600);
+  color: var(--brand-link);
   text-decoration: underline;
   text-underline-offset: 3px;
   text-decoration-thickness: 1px;
 }
 
 .prose-site a:hover {
-  color: var(--brand-primary-700);
+  color: var(--brand-link-hover);
 }
 
 .prose-site strong {
@@ -250,6 +296,206 @@ body {
   opacity: 1;
 }
 
+/* ============================================================================
+   HABER PLATFORMU — ORTAK YARDIMCILAR
+   ========================================================================== */
+
+/* Başlık kırpma — haber kartlarında satır sayısını sabitler, böylece kart
+   yüksekliği içerik uzunluğuna göre zıplamaz (CLS koruması). */
+.clamp-2 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  overflow: hidden;
+}
+.clamp-3 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+.clamp-4 {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 4;
+  line-clamp: 4;
+  overflow: hidden;
+}
+
+/* Manşet tipografisi — gövde metninden belirgin biçimde ayrışır. */
+.headline {
+  font-weight: 750;
+  letter-spacing: -0.021em;
+  line-height: 1.16;
+  text-wrap: balance;
+}
+
+/* Spot metin — manşet ile gövde arasındaki editoryal köprü. */
+.standfirst {
+  font-size: 1.125rem;
+  line-height: 1.65;
+  color: var(--brand-text-muted);
+  text-wrap: pretty;
+}
+
+/* Sayısal veri hücresi — sütunlar kayarken rakamlar hizada kalır. */
+.numeric {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.01em;
+}
+
+/* Yatay kaydırmalı şeritler (piyasa bandı, mobil haber listesi).
+   Kaydırma çubuğu gizlenir ama kaydırma ERİŞİLEBİLİR kalır: klavye ile
+   odaklanabilir ve dokunmayla sürüklenebilir. */
+.scroll-strip {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.scroll-strip::-webkit-scrollbar {
+  display: none;
+}
+.scroll-snap-strip {
+  scroll-snap-type: x mandatory;
+}
+.scroll-snap-strip > * {
+  scroll-snap-align: start;
+}
+
+/* ---------------------------------------------------------------------------
+   MİKRO ETKİLEŞİMLER
+   Süreler 160–320 ms aralığında tutuldu; hepsi prefers-reduced-motion ile
+   kapanır (dosyanın sonundaki blok).
+   ------------------------------------------------------------------------- */
+
+/* Haber kartı — hafif yükselme. transform kullanılır (layout tetiklemez). */
+.card-lift {
+  transition:
+    transform 200ms ease-out,
+    box-shadow 200ms ease-out,
+    border-color 200ms ease-out;
+}
+@media (hover: hover) {
+  .card-lift:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px -8px rgb(15 23 35 / 0.18);
+    border-color: var(--brand-accent-200);
+  }
+}
+
+/* Kart görselinde çok sınırlı zoom — %3, abartısız. */
+.media-zoom {
+  overflow: hidden;
+}
+.media-zoom img {
+  transition: transform 320ms ease-out;
+}
+@media (hover: hover) {
+  .media-zoom:hover img {
+    transform: scale(1.03);
+  }
+}
+
+/* Bölüm girişi — opacity + küçük translate. JS yok, saf CSS. */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .reveal {
+      animation: reveal-in linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 40%;
+    }
+  }
+}
+@keyframes reveal-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Piyasa değeri güncellendiğinde kısa vurgu — yön bilgisini renkle taşımaz,
+   sadece "bu hücre değişti" der. */
+@keyframes tick-flash {
+  from {
+    background-color: var(--brand-neutral-soft);
+  }
+  to {
+    background-color: transparent;
+  }
+}
+.tick-flash {
+  animation: tick-flash 600ms ease-out;
+}
+
+/* ---------------------------------------------------------------------------
+   HERO — Ken Burns zoom
+   12 saniyede %3,5 büyüme. Bilinçli olarak çok yavaş ve çok küçük:
+   bakarken hareket fark edilmez, ama görsel donuk durmaz.
+   `transform` kullanılır — layout tetiklemez, GPU'da çalışır.
+   ------------------------------------------------------------------------- */
+@keyframes hero-ken-burns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.035);
+  }
+}
+
+.hero-zoom {
+  animation: hero-ken-burns 12s ease-out forwards;
+  /* Tarayıcıya "bunu ayrı katmanda çiz" ipucu — her karede yeniden
+     boyama yapmasın. */
+  will-change: transform;
+}
+
+/* Hero metni — aktif slayt değiştiğinde kısa fade + yukarı kayma.
+   340 ms: fark edilir ama okumayı geciktirmez. */
+@keyframes hero-text-in {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.hero-text-in {
+  animation: hero-text-in 340ms ease-out both;
+}
+
+/* Yükleniyor iskeleti — ölçüsü sabit, layout shift üretmez. */
+@keyframes skeleton-pulse {
+  50% {
+    opacity: 0.45;
+  }
+}
+.skeleton {
+  background-color: var(--brand-bg-subtle);
+  border-radius: var(--brand-radius);
+  animation: skeleton-pulse 1.6s ease-in-out infinite;
+}
+
+/* Mobil menü açıkken gövde kaymasın. */
+.scroll-locked {
+  overflow: hidden;
+  /* Kaydırma çubuğu kaybolunca içerik yatay sıçramasın */
+  scrollbar-gutter: stable;
+}
+
+/* ============================================================================
+   HAREKET AZALTMA — kullanıcı tercihi her şeyin üstündedir.
+   ========================================================================== */
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -258,6 +504,31 @@ body {
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .card-lift:hover {
+    transform: none;
+  }
+  .media-zoom:hover img {
+    transform: none;
+  }
+  .scroll-snap-strip {
+    scroll-snap-type: none;
+  }
+  /* Hero zoom tamamen kapanır — animation-duration hilesi yerine
+     animasyonu kökten kaldırıyoruz ki son karede takılı kalmasın. */
+  .hero-zoom {
+    animation: none !important;
+    transform: none !important;
+    will-change: auto;
+  }
+  /* Metin animasyonu da kapanır — ama `both` yüzünden opacity:0'da
+     TAKILI KALMAMALI. Bu yüzden görünür duruma sabitliyoruz. */
+  .hero-text-in {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
   }
 }

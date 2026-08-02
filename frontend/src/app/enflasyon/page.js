@@ -86,7 +86,7 @@ export default function EnflasyonPage() {
 
       <header className="border-b border-line pb-8">
         <nav aria-label="Konum" className="text-xs text-muted">
-          <Link href="/" className="hover:text-primary-600">
+          <Link href="/" className="inline-flex min-h-6 items-center hover:text-primary-600">
             Ana Sayfa
           </Link>
         </nav>

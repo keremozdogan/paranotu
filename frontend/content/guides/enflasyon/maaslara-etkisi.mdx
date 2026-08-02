@@ -1,0 +1,80 @@
+---
+title: "Enflasyon Maaşınızı Nasıl Etkiliyor?"
+summary: "Zam aldınız ama alım gücünüz azaldı mı? Nominal zam ile reel zam arasındaki farkı, hesaplama yöntemini ve maaşınızı enflasyona karşı korumanın yollarını anlatıyoruz."
+seoDescription: "Enflasyon maaşı nasıl etkiler? Nominal zam ile reel zam farkı, hesaplama formülü ve alım gücü kaybını ölçme yöntemi."
+keywords: ["enflasyon maaş etkisi", "reel zam", "nominal zam", "alım gücü", "maaş zammı hesaplama"]
+
+publishedAt: 2026-08-03
+updatedAt: 2026-08-03
+nextReviewAt: 2026-09-03
+updateTrigger: tuik_tufe
+freshnessStatus: current
+
+author: editor
+isFile: true
+filePriority: 30
+schemaType: Article
+
+sources:
+  - name: "TÜİK — Tüketici Fiyat Endeksi Haber Bülteni"
+    url: "https://data.tuik.gov.tr/Bulten/Index?p=Tuketici-Fiyat-Endeksi"
+    kind: official
+---
+
+Maaşına %25 zam geldi, yıllık enflasyon <Rakam id="tufeYillik" />. Kazandın mı, kaybettin mi?
+
+Cevap: **kaybettin.** Rakam olarak maaşın arttı ama aynı parayla alabildiğin şey azaldı. Bu farkın adı reel kayıp.
+
+## Nominal zam ve reel zam
+
+**Nominal zam**, maaşındaki yüzde artıştır. Bordroda gördüğün rakam.
+
+**Reel zam**, bu artışın enflasyondan arındırılmış hâlidir. Yani alım gücündeki gerçek değişim.
+
+Doğru formül şudur:
+
+```
+Reel değişim = ((1 + zam oranı) / (1 + enflasyon oranı) - 1) × 100
+```
+
+Yukarıdaki örnekte:
+
+```
+((1 + 0,25) / (1 + 0,3211) - 1) × 100 = -5,4
+```
+
+Yani %25 zam almana rağmen alım gücün yaklaşık **%5,4 azaldı**.
+
+<Callout type="warning" title="Yaygın hata">
+Zam oranından enflasyonu çıkarmak (25 − 32,11 = −7,11) yaklaşık bir sonuç verir ama doğru değildir. Oranlar bölünür, çıkarılmaz. Fark küçük görünse de yüksek enflasyonda ciddileşir.
+</Callout>
+
+Hesabı kendi rakamlarınla yapmak için [maaş–enflasyon hesaplayıcısını](/araclar/enflasyon-hesaplayici) kullanabilirsin.
+
+## Başabaş noktası nedir?
+
+Alım gücünü korumak için gereken zam oranı, tam olarak enflasyon oranıdır. Yıllık enflasyon <Rakam id="tufeYillik" /> ise, aynı yaşam standardını sürdürmek için maaşının en az bu kadar artması gerekir.
+
+Bunun altındaki her zam, matematiksel olarak maaş kaybıdır — miktarı artmış olsa bile.
+
+## Neden hissettiğin enflasyon farklı?
+
+TÜİK'in açıkladığı oran, **ortalama bir sepeti** ölçer. Senin harcama dağılımın bu ortalamadan farklıysa kişisel enflasyonun sapabilir:
+
+- Gelirinin yarısını kiraya veriyorsan, kira artışı seni ortalamanın çok üstünde etkiler.
+- Araban yoksa akaryakıt zamlarından daha az etkilenirsin.
+- Çocuğun varsa eğitim ve gıda kalemlerinin ağırlığı senin sepetinde daha yüksektir.
+
+Bu yüzden reel hesabı yaparken resmî oranı değil, kendi sepetine yakın bir oranı kullanmak daha doğru sonuç verir. Güncel veriler ve aylık seri [enflasyon sayfasında](/enflasyon).
+
+## Maaşını enflasyona karşı korumanın yolları
+
+**Birikimi tutarla değil oranla belirle.** "Ayda 5.000 ₺" hedefi her yıl reel olarak küçülür; "gelirimin %20'si" hedefi kendini korur.
+
+**Zam görüşmesine veriyle git.** "Enflasyon %32, benim zammım %25, reel olarak %5,4 kaybettim" cümlesi, "geçinemiyorum" cümlesinden farklı bir konuşma başlatır.
+
+**Bütçeni üç ayda bir güncelle.** Yılda bir yapılan plan, fiyatlar değiştiği için birkaç ay içinde geçersizleşir. Yöntem için [40-40-20 kuralına](/butce/40-40-20-kurali) bakabilirsin.
+
+**Nakit fazlasını boşta tutma.** Yüksek enflasyonda vadesiz hesapta bekleyen para her gün değer kaybeder.
+
+<Disclaimer />

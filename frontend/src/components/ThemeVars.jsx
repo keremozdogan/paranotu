@@ -17,8 +17,34 @@ const RADIUS_SCALE = {
 };
 
 function paletteToVars(prefix, palette) {
+  if (!palette) return "";
   return Object.entries(palette)
     .map(([step, value]) => `--brand-${prefix}-${step}:${value};`)
+    .join("");
+}
+
+function surfaceToVars(surface) {
+  if (!surface) return "";
+  return [
+    `--brand-bg:${surface.bg};`,
+    `--brand-bg-subtle:${surface.bgSubtle};`,
+    `--brand-border:${surface.border};`,
+    `--brand-text:${surface.text};`,
+    `--brand-text-muted:${surface.textMuted};`,
+  ].join("");
+}
+
+/**
+ * Semantik roller — camelCase anahtarları kebab-case CSS değişkenine çevirir.
+ * `positiveSoft` → `--brand-positive-soft`
+ */
+function rolesToVars(roles) {
+  if (!roles) return "";
+  return Object.entries(roles)
+    .map(([key, value]) => {
+      const name = key.replace(/[A-Z]/g, (ch) => `-${ch.toLowerCase()}`);
+      return `--brand-${name}:${value};`;
+    })
     .join("");
 }
 
@@ -26,23 +52,15 @@ export function buildThemeCss(theme = siteConfig.theme) {
   const light = [
     paletteToVars("primary", theme.primary),
     paletteToVars("accent", theme.accent),
-    `--brand-bg:${theme.surface.bg};`,
-    `--brand-bg-subtle:${theme.surface.bgSubtle};`,
-    `--brand-border:${theme.surface.border};`,
-    `--brand-text:${theme.surface.text};`,
-    `--brand-text-muted:${theme.surface.textMuted};`,
+    paletteToVars("gold", theme.gold),
+    surfaceToVars(theme.surface),
+    rolesToVars(theme.roles?.light),
     `--brand-radius:${RADIUS_SCALE[theme.radius] ?? RADIUS_SCALE.soft};`,
   ].join("");
 
-  const dark = theme.surfaceDark
-    ? [
-        `--brand-bg:${theme.surfaceDark.bg};`,
-        `--brand-bg-subtle:${theme.surfaceDark.bgSubtle};`,
-        `--brand-border:${theme.surfaceDark.border};`,
-        `--brand-text:${theme.surfaceDark.text};`,
-        `--brand-text-muted:${theme.surfaceDark.textMuted};`,
-      ].join("")
-    : "";
+  /* Koyu tema: yüzeyler + roller birlikte değişir. Paletler sabit kalır —
+     bu yüzden bağlantı/yükseliş/düşüş renkleri role devredildi. */
+  const dark = [surfaceToVars(theme.surfaceDark), rolesToVars(theme.roles?.dark)].join("");
 
   return (
     `:root{${light}}` +

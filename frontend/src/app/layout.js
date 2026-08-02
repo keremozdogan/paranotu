@@ -5,12 +5,32 @@ import ThemeVars from "@/components/ThemeVars";
 import Scripts from "@/components/Scripts";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import { StickyMobileAdSlot } from "@/components/ads";
 import { JsonLd, organizationJsonLd, websiteJsonLd } from "@/lib/seo";
 
 import "./globals.css";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+/**
+ * ⚠️ `latin-ext` ZORUNLU — çıkarma.
+ * Türkçe'nin ğ Ğ ş Ş İ karakterleri `latin` alt kümesinde DEĞİL, `latin-ext`
+ * içinde. Sadece `latin` yüklenirse tarayıcı bu glifleri geç indirir ve ilk
+ * boyamada "değişim", "İş", "Şirket" gibi kelimeler yedek yazı tipiyle çizilip
+ * sonra sıçrar. Türkçe bir yayın için görünür bir kusur.
+ *
+ * `display: "swap"` — metin, yazı tipi inerken görünmez kalmaz (LCP için).
+ */
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+});
+
+/* Sayısal veri (fiyat, yüzde, endeks) için — tabular hizalama şart. */
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin", "latin-ext"],
+  display: "swap",
+});
 
 /** @type {import("next").Metadata} */
 export const metadata = {
@@ -89,6 +109,10 @@ export default function RootLayout({ children }) {
           {children}
         </main>
         <Footer />
+
+        {/* Mobil alt yapışkan reklam — NEXT_PUBLIC_MOBILE_STICKY_AD_ENABLED
+            "true" değilse hiç render edilmez (varsayılan: kapalı). */}
+        <StickyMobileAdSlot />
 
         <JsonLd data={organizationJsonLd()} />
         <JsonLd data={websiteJsonLd()} />

@@ -32,6 +32,9 @@ yarn-error.log*
 
 # env files (can opt-in for committing if needed)
 .env*
+# Şablon dosyası commit EDİLMELİ — içinde gerçek anahtar yok, sadece
+# hangi değişkenlerin gerektiğini ve lisans uyarılarını anlatıyor.
+!.env.example
 
 # vercel
 .vercel

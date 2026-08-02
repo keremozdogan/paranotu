@@ -1,152 +1,273 @@
+/**
+ * ============================================================================
+ *  ANA SAYFA — ekonomi platformu düzeni
+ * ============================================================================
+ *  Bölüm sırası (spec §6):
+ *    A. Kritik haber alanı (manşet + destekleyiciler)
+ *    B. Piyasalarda son durum
+ *    C–F. Türkiye / Dünya / Döviz-Altın / Borsa bölümleri
+ *    H. Yaklaşan ekonomik takvim
+ *    I. Para rehberleri  ← MEVCUT İÇERİK, korunuyor
+ *    J. Hesaplama araçları
+ *
+ *  ────────────────────────────────────────────────────────────────────────
+ *  KADEMELİ AÇILMA
+ *  ────────────────────────────────────────────────────────────────────────
+ *  Haber bölümleri içerik YOKSA render edilmez. Sayfa bugün rehber ve veri
+ *  odaklı görünür; haber akışı başladığında bölümler kendiliğinden belirir.
+ *  Boş başlıklarla iskelet bir sayfa göstermek, hiç göstermemekten kötüdür.
+ * ============================================================================
+ */
+
 import Link from "next/link";
 import { Fragment, Suspense } from "react";
 
 import siteConfig from "~/site.config";
-import AdBanner from "@/components/AdBanner";
+import { BannerAdSlot, InFeedAdSlot } from "@/components/ads";
 import PostCard from "@/components/PostCard";
 import Newsletter from "@/components/Newsletter";
-import LiveRates from "@/components/LiveRates";
-import {
-  getPostSummaries,
-  getFeaturedPosts,
-  getCategoriesWithCounts,
-} from "@/lib/posts";
+import SectionRow from "@/components/news/SectionRow";
+import FeedStrip from "@/components/news/FeedStrip";
+import MarketOverview from "@/components/market/MarketOverview";
+import UpcomingEvents from "@/components/market/UpcomingEvents";
+import Hero from "@/components/home/Hero";
+import FilesSection from "@/components/home/FilesSection";
+import { getPostSummaries, getFeaturedPosts, getCategoriesWithCounts } from "@/lib/posts";
+import { getRankedNews, getNewsBySection, activeSections } from "@/lib/news";
+import { getFeaturedFiles } from "@/lib/evergreen";
+import { resolveHero } from "@/lib/slots";
+import { getRecentFeedItems } from "@/lib/feed";
+import figures from "~/content/data/figures";
 import { buildMetadata } from "@/lib/seo";
 
 export const metadata = buildMetadata({ path: "/" });
 
-export default function HomePage() {
-  const all = getPostSummaries();
-  const hero = getFeaturedPosts(1)[0];
-  const rest = all.filter((p) => p.slug !== hero?.slug);
+/* Haber ve piyasa verisi zaman duyarlı — ana sayfa düzenli tazelenir. */
+export const revalidate = 600;
+
+/** Ana sayfada satır olarak gösterilecek bölümler ve sıraları. */
+const HOME_SECTIONS = ["turkiye", "dunya", "doviz", "altin", "borsa"];
+
+export default async function HomePage() {
+  /* ---------------------------------------------------------------- HERO */
+  /* Sabitlenmiş slotlar + otomatik doldurma. Haber yoksa dosyalarla dolar. */
+  const { primary, secondary } = await resolveHero();
+
+  /* Ham gelişme akışı — D1 bağlı değilse boş dizi, bölüm hiç çizilmez. */
+  const feedItems = await getRecentFeedItems({ limit: 10 });
+
+  /* ---------------------------------------------------------------- HABER */
+  const ranked = getRankedNews(5);
+  const hasNewsContent = ranked.length > 0;
+
+  const sectionRows = HOME_SECTIONS.map((slug) => {
+    const section = activeSections().find((s) => s.slug === slug);
+    if (!section) return null;
+    /* Manşette gösterilenleri satırlarda tekrar etme. */
+    const shownSlugs = new Set(ranked.map((n) => n.slug));
+    const items = getNewsBySection(slug).filter((n) => !shownSlugs.has(n.slug));
+    return items.length > 0 ? { section, items } : null;
+  }).filter(Boolean);
+
+  /* -------------------------------------------------------------- REHBER */
+  const posts = getPostSummaries();
+  const guideHero = getFeaturedPosts(1)[0];
+  const guides = posts.filter((p) => p.slug !== guideHero?.slug).slice(0, 4);
   const categories = getCategoriesWithCounts().filter((c) => c.count > 0);
-  const adEvery = siteConfig.content.adEveryNPosts;
 
   return (
     <>
-      {/* ------------------------------------------------------------ HERO */}
-      <section className="border-b border-line bg-gradient-to-b from-primary-50/60 to-transparent">
-        <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6 sm:py-20">
-          <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary-600">
-            {siteConfig.tagline}
-          </p>
-          <h1 className="mt-3 max-w-2xl text-3xl font-extrabold leading-[1.15] tracking-tight text-ink sm:text-5xl">
-            Küçük tutarlarla başlayan{" "}
-            <span className="text-primary-600">büyük alışkanlıklar</span>
-          </h1>
-          <p className="mt-4 max-w-xl text-base leading-relaxed text-muted sm:text-lg">
-            {siteConfig.description}
-          </p>
-          <div className="mt-7 flex flex-wrap gap-3">
-            <Link
-              href="/blog"
-              className="rounded-lg bg-primary-600 px-5 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-700"
-            >
-              Rehberlere göz at
-            </Link>
-            <Link
-              href="/kategori/butce"
-              className="rounded-lg border border-line bg-canvas px-5 py-3 text-sm font-semibold text-ink transition-colors hover:border-primary-300"
-            >
-              Bütçeye sıfırdan başla
-            </Link>
-          </div>
-        </div>
-      </section>
+      {/* ==================================================== A. MANŞET ALANI */}
+      {primary.length > 0 ? (
+        <>
+          <h1 className="sr-only">{siteConfig.name} — güncel ekonomi gündemi</h1>
+          <Hero primary={primary} secondary={secondary} />
+        </>
+      ) : (
+        /* Haber akışı başlamadan önceki editoryal giriş.
+           Sahte manşet üretmek yerine sitenin gerçekten sunduğu şeyi anlatır. */
+        <section className="border-b border-line bg-subtle/50">
+          <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 sm:py-16">
+            <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent-700">
+              {siteConfig.tagline}
+            </p>
+            <h1 className="headline mt-3 max-w-3xl text-3xl text-ink sm:text-5xl">
+              Ekonomiyi anlamak için{" "}
+              <span className="text-primary-600">rakamlarla başla</span>
+            </h1>
+            <p className="standfirst mt-4 max-w-2xl">
+              Güncel enflasyon verileri, piyasa görünümü ve bütçeni doğrudan etkileyen
+              rakamlar — karmaşık terimlere boğmadan.
+            </p>
 
-      {/* --------------------------------------------- REKLAM: BAŞLIK ALTI */}
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
-        <AdBanner placement="headerBelow" />
-      </div>
+            {/* Sitenin en güçlü verisi doğrudan ilk ekranda. */}
+            <dl className="mt-8 grid max-w-2xl gap-3 sm:grid-cols-3">
+              {[figures.tufeYillik, figures.politikaFaizi, figures.asgariNet]
+                .filter(Boolean)
+                .map((f) => (
+                  <div key={f.label} className="rounded-brand border border-line bg-canvas p-4">
+                    <dt className="text-xs font-medium uppercase tracking-wide text-muted">
+                      {f.label}
+                    </dt>
+                    <dd className="numeric mt-1 text-2xl font-bold text-ink">{f.display}</dd>
+                    <dd className="mt-0.5 text-[11px] text-muted">{f.period}</dd>
+                  </div>
+                ))}
+            </dl>
 
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 pb-16 sm:px-6 lg:grid-cols-[minmax(0,1fr)_320px]">
-        {/* --------------------------------------------------- ANA SÜTUN */}
-        <div>
-          {hero ? (
-            <section className="mb-12">
-              <h2 className="mb-4 text-xs font-bold uppercase tracking-wider text-muted">
-                Öne çıkan
-              </h2>
-              <PostCard post={hero} variant="featured" priority />
-            </section>
-          ) : null}
-
-          <section>
-            <div className="mb-5 flex items-baseline justify-between">
-              <h2 className="text-xl font-bold tracking-tight text-ink">Son yazılar</h2>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link
+                href="/enflasyon"
+                className="inline-flex min-h-11 items-center rounded-brand bg-accent-800 px-5 text-sm font-semibold text-white transition-colors hover:bg-accent-900"
+              >
+                Enflasyon verilerine bak
+              </Link>
               <Link
                 href="/blog"
-                className="text-sm font-medium text-primary-600 hover:text-primary-700"
+                className="inline-flex min-h-11 items-center rounded-brand border border-line bg-canvas px-5 text-sm font-semibold text-ink transition-colors hover:border-accent-300"
               >
-                Tümü →
+                Para rehberleri
               </Link>
             </div>
+          </div>
+        </section>
+      )}
 
-            {rest.length ? (
-              <div className="grid gap-6 sm:grid-cols-2">
-                {rest.slice(0, siteConfig.content.postsPerPage).map((post, i) => (
-                  <Fragment key={post.slug}>
-                    <PostCard post={post} />
-                    {/* Liste araları — her N karttan sonra reklam */}
-                    {(i + 1) % adEvery === 0 ? (
-                      <div className="sm:col-span-2">
-                        <AdBanner placement="listInline" className="my-0" />
-                      </div>
-                    ) : null}
-                  </Fragment>
-                ))}
-              </div>
-            ) : (
-              <p className="rounded-brand border border-dashed border-line p-8 text-center text-sm text-muted">
-                Henüz yazı yok. <code>content/posts/</code> içine bir .mdx dosyası ekle.
-              </p>
-            )}
-          </section>
-        </div>
+      {/*
+        ⚠️ HERO'NUN ÜSTÜNDE VE HEMEN ALTINDA REKLAM YOK — bilinçli.
+        İlk ekran editoryal içeriğe ait. İlk reklam, okur en az bir
+        anlamlı bölümü gördükten SONRA, doğal bir ayrım noktasında çıkar.
+      */}
+      <div className="mx-auto max-w-7xl space-y-12 px-4 py-10 sm:px-6">
+        {/* ========================================= PARANOTU DOSYALARI (§7) */}
+        <FilesSection guides={getFeaturedFiles(6)} />
 
-        {/* ------------------------------------------------------ SIDEBAR */}
-        <aside className="space-y-6 lg:sticky lg:top-24 lg:self-start">
-          {siteConfig.features.liveRates ? (
-            /* Backend yavaşsa sayfanın geri kalanı onu beklemesin */
-            <Suspense
-              fallback={
-                <div className="h-48 animate-pulse rounded-brand border border-line bg-subtle/60" />
-              }
-            >
-              <LiveRates />
-            </Suspense>
+        {/* --- REKLAM 1: ilk içerik bloğundan sonra, doğal ayrım --- */}
+        <BannerAdSlot className="my-0" />
+
+        {/* ============================================ B. PİYASALARDA SON DURUM */}
+        <MarketOverview />
+
+        {/* ================================= SON GELİŞMELER (ham feed, noindex)
+            Bu kartlar ParaNotu sayfasına değil, orijinal kaynağa gider. */}
+        <FeedStrip items={feedItems} />
+
+        {/* ===================================== C–F. HABER BÖLÜMLERİ (varsa) */}
+        {sectionRows.map(({ section, items }) => (
+          <SectionRow key={section.slug} section={section} items={items} />
+        ))}
+
+        {/* --- REKLAM 2: haber bölümleri bittikten sonra.
+            Bölümlerin ARASINA reklam koymuyoruz; ana sayfada reklam
+            yoğunluğu bilinçli olarak düşük tutuldu (§11). --- */}
+        {sectionRows.length > 0 ? <BannerAdSlot className="my-0" /> : null}
+
+        {/* ================================================ H. EKONOMİK TAKVİM */}
+        <Suspense
+          fallback={<div className="skeleton h-48" aria-hidden="true" />}
+        >
+          <UpcomingEvents />
+        </Suspense>
+
+        {/* ================================================ I. PARA REHBERLERİ */}
+        <section aria-labelledby="rehberler" className="reveal">
+          <div className="mb-4 flex items-baseline justify-between gap-4 border-b border-line pb-2">
+            <h2 id="rehberler" className="text-xl font-bold tracking-tight text-ink">
+              Para Rehberi
+            </h2>
+            <Link href="/blog" className="inline-flex min-h-6 shrink-0 items-center text-sm font-medium text-link hover:underline">
+              Tümü<span aria-hidden="true"> →</span>
+            </Link>
+          </div>
+
+          {guideHero ? (
+            <div className="mb-6">
+              <PostCard post={guideHero} variant="featured" priority={!hasNewsContent} />
+            </div>
           ) : null}
 
-          {categories.length ? (
-            <nav
-              aria-label="Kategoriler"
-              className="rounded-brand border border-line bg-canvas p-5"
-            >
-              <h2 className="text-xs font-bold uppercase tracking-wider text-ink">
-                Kategoriler
-              </h2>
-              <ul className="mt-3 space-y-1">
+          {guides.length > 0 ? (
+            <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+              {guides.map((post, i) => (
+                <Fragment key={post.slug}>
+                  <PostCard post={post} />
+                  {/* Liste arası reklam — yalnızca kart akışı yeterince
+                      uzunsa. Son karttan sonra reklam koymuyoruz. */}
+                  {(i + 1) % siteConfig.content.adEveryNPosts === 0 &&
+                  i + 1 < guides.length ? (
+                    <div className="sm:col-span-2 lg:col-span-4">
+                      <InFeedAdSlot className="my-0" />
+                    </div>
+                  ) : null}
+                </Fragment>
+              ))}
+            </div>
+          ) : null}
+
+          {categories.length > 0 ? (
+            <nav aria-label="Rehber kategorileri" className="mt-5">
+              <ul className="flex flex-wrap gap-2">
                 {categories.map((cat) => (
                   <li key={cat.slug}>
                     <Link
                       href={`/kategori/${cat.slug}`}
-                      className="flex items-center justify-between rounded-lg px-2 py-2 text-sm text-muted transition-colors hover:bg-subtle hover:text-ink"
+                      className="inline-flex min-h-9 items-center rounded-brand border border-line px-3 text-sm text-muted transition-colors hover:border-accent-300 hover:text-ink"
                     >
-                      <span>{cat.name}</span>
-                      <span className="text-xs text-muted/60">{cat.count}</span>
+                      {cat.name}
+                      <span className="ml-1.5 text-xs text-muted/70">{cat.count}</span>
                     </Link>
                   </li>
                 ))}
               </ul>
             </nav>
           ) : null}
+        </section>
 
-          {siteConfig.features.newsletter ? (
-            <Newsletter variant="inline" source="home-sidebar" />
-          ) : null}
+        {/* ============================================== J. HESAPLAMA ARAÇLARI */}
+        <section aria-labelledby="araclar" className="reveal">
+          <div className="mb-4 flex items-baseline justify-between gap-4 border-b border-line pb-2">
+            <h2 id="araclar" className="text-xl font-bold tracking-tight text-ink">
+              Hesaplama Araçları
+            </h2>
+            <Link href="/araclar" className="inline-flex min-h-6 shrink-0 items-center text-sm font-medium text-link hover:underline">
+              Tümü<span aria-hidden="true"> →</span>
+            </Link>
+          </div>
 
-          <AdBanner placement="sidebar" className="my-0" />
-        </aside>
+          {/* Yalnızca GERÇEKTEN ÇALIŞAN araçlar listeleniyor (spec §6-J).
+              Yeni araç eklendikçe buraya eklenir. */}
+          <div className="grid gap-4 sm:grid-cols-2">
+            {[
+              {
+                href: "/araclar/butce-hesaplayici",
+                title: "Bütçe Hesaplayıcı",
+                description:
+                  "Gelirini 50/30/20 kuralına göre böl, harcama kalemlerini gör ve ne kadar biriktirebileceğini hesapla.",
+              },
+              {
+                href: "/araclar/enflasyon-hesaplayici",
+                title: "Maaş–Enflasyon Hesaplayıcı",
+                description:
+                  "Aldığın zam enflasyonun altında mı kaldı? Maaşının reel değişimini rakamla gör.",
+              },
+            ].map((tool) => (
+              <Link
+                key={tool.href}
+                href={tool.href}
+                className="card-lift group rounded-brand border border-line bg-canvas p-5"
+              >
+                <h3 className="text-base font-semibold text-ink underline-offset-2 group-hover:underline">
+                  {tool.title}
+                </h3>
+                <p className="mt-1.5 text-sm leading-relaxed text-muted">{tool.description}</p>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+        {siteConfig.features.newsletter ? (
+          <Newsletter variant="inline" source="home" />
+        ) : null}
       </div>
     </>
   );

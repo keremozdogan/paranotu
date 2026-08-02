@@ -19,6 +19,7 @@ import matter from "gray-matter";
 import readingTime from "reading-time";
 
 import siteConfig from "~/site.config";
+import { slugify } from "@/lib/slug";
 
 const POSTS_DIR = path.join(process.cwd(), "content", "posts");
 const EXTENSIONS = [".mdx", ".md"];
@@ -27,17 +28,12 @@ const EXTENSIONS = [".mdx", ".md"];
 /*  Yardımcılar                                                               */
 /* -------------------------------------------------------------------------- */
 
-/** "Bütçe Nasıl Yapılır?" → "butce-nasil-yapilir" (Türkçe karakter destekli) */
-export function slugify(value) {
-  const map = { ç: "c", ğ: "g", ı: "i", ö: "o", ş: "s", ü: "u", İ: "i" };
-  return String(value)
-    .replace(/[çğıöşüİ]/g, (ch) => map[ch] ?? ch)
-    .toLocaleLowerCase("tr")
-    .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "");
-}
+/**
+ * Slug üretimi `@/lib/slug` içine taşındı — haber katmanı, provider'lar ve
+ * istemci tarafı arama da aynı fonksiyonu kullanıyor.
+ * Geriye dönük uyumluluk için buradan yeniden dışa aktarılıyor.
+ */
+export { slugify };
 
 function stripMarkdown(md) {
   return md
@@ -153,7 +149,6 @@ export const getAllPosts = cache(() => {
 
 /** Liste görünümleri için — ağır `content` alanı olmadan. */
 export const getPostSummaries = cache(() =>
-  // eslint-disable-next-line no-unused-vars
   getAllPosts().map(({ content, ...meta }) => meta),
 );
 
@@ -277,14 +272,22 @@ export function extractHeadings(markdown) {
   return headings;
 }
 
-/** İstemci tarafı arama için hafif indeks. */
+/**
+ * İstemci tarafı arama için hafif indeks.
+ *
+ * `href` alanı burada üretilir — arama bileşeni yol biçimini bilmez.
+ * Haber katmanı da aynı şekli döndürdüğü için ikisi tek listede birleşebilir
+ * (bkz. Header.jsx).
+ */
 export const getSearchIndex = cache(() =>
   getPostSummaries().map((p) => ({
     slug: p.slug,
+    href: `/blog/${p.slug}`,
     title: p.title,
     description: p.description,
     category: p.category?.name ?? "",
     tags: p.tags ?? [],
     date: p.date,
+    kind: "rehber",
   })),
 );
