@@ -211,8 +211,17 @@ export default function Hero({ primary = [], secondary = [] }) {
                         i === index ? "opacity-100" : "pointer-events-none opacity-0"
                       }`}
                       aria-hidden={i !== index}
-                      /* Gizli slaytlar odak sırasından çıkar. */
-                      {...(i !== index ? { inert: "" } : {})}
+                      /**
+                       * Gizli slaytlar odak sırasından çıkar.
+                       *
+                       * ⚠️ `inert=""` YAZMA. React boş dizeyi boolean
+                       * attribute için FALSE sayar ve konsola uyarı basar —
+                       * yani slayt inert OLMAZ, Tab ile hâlâ odaklanılır.
+                       * Görünmeyen bir slaytın içindeki bağlantıya odak
+                       * gitmesi klavye kullanıcısı için "kaybolan odak"
+                       * demektir. Boolean `true` veriyoruz.
+                       */
+                      {...(i !== index ? { inert: true } : {})}
                     >
                       <Slide item={item} active={i === index} priority={i === 0} animate />
                     </div>
