@@ -4,6 +4,7 @@ import { Fragment, Suspense } from "react";
 import siteConfig from "~/site.config";
 import AdBanner from "@/components/AdBanner";
 import PostCard from "@/components/PostCard";
+import Reveal from "@/components/Reveal";
 import Newsletter from "@/components/Newsletter";
 import LiveRates from "@/components/LiveRates";
 import {
@@ -63,12 +64,12 @@ export default function HomePage() {
         {/* --------------------------------------------------- ANA SÜTUN */}
         <div>
           {hero ? (
-            <section className="mb-12">
+            <Reveal as="section" className="mb-12">
               <h2 className="mb-4 text-xs font-bold uppercase tracking-wider text-muted">
                 Öne çıkan
               </h2>
               <PostCard post={hero} variant="featured" priority />
-            </section>
+            </Reveal>
           ) : null}
 
           <section>
@@ -83,7 +84,7 @@ export default function HomePage() {
             </div>
 
             {rest.length ? (
-              <div className="grid gap-6 sm:grid-cols-2">
+              <Reveal stagger className="grid gap-6 sm:grid-cols-2">
                 {rest.slice(0, siteConfig.content.postsPerPage).map((post, i) => (
                   <Fragment key={post.slug}>
                     <PostCard post={post} />
@@ -95,7 +96,7 @@ export default function HomePage() {
                     ) : null}
                   </Fragment>
                 ))}
-              </div>
+              </Reveal>
             ) : (
               <p className="rounded-brand border border-dashed border-line p-8 text-center text-sm text-muted">
                 Henüz yazı yok. <code>content/posts/</code> içine bir .mdx dosyası ekle.
