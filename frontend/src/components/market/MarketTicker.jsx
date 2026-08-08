@@ -60,7 +60,20 @@ export default async function MarketTicker() {
               /* Klavye kullanıcısı da kaydırabilsin diye odaklanabilir liste. */
               tabIndex={0}
               aria-label="Piyasa değerleri"
-              className="scroll-strip scroll-snap-strip flex flex-1 items-stretch divide-x divide-chrome-line/70"
+              /**
+               * ⚠️ `min-w-0` ŞART — kaldırma.
+               *
+               * Bu <ul> bir flex öğesi ve flex öğelerinin varsayılan
+               * `min-width: auto` değeri, içeriğinden daha dar olmalarını
+               * ENGELLER. O yüzden `overflow-x: auto` hiç devreye girmez;
+               * bant 10 enstrümanla ~1630px'e uzar ve TÜM SAYFAYI yatay
+               * kaydırılabilir yapar (her sayfada, her genişlikte).
+               *
+               * Hata yalnızca bant DOLUYKEN görünür; veri sağlayıcısı
+               * bağlanmadığı sürece tek satırlık durum mesajı olduğu için
+               * fark edilmez. Yani sağlayıcı bağlandığı gün ortaya çıkar.
+               */
+              className="scroll-strip scroll-snap-strip flex min-w-0 flex-1 items-stretch divide-x divide-chrome-line/70"
             >
               {result.data.map((q) => (
                 <li key={q.symbol} className="shrink-0">

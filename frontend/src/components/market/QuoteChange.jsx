@@ -22,8 +22,27 @@ export default function QuoteChange({
 }) {
   const c = formatChange(change, changePercent, { precision });
 
+  /**
+   * ⚠️ `relative` ŞART — kaldırma.
+   *
+   * Aşağıdaki `sr-only` etiketi Tailwind tarafından `position: absolute`
+   * yapılır. Konumlandırılmış bir ata yoksa referansı sayfanın KÖKÜ olur.
+   * CSS kuralı gereği, containing block'u kaydırma kapsayıcısının DIŞINDA
+   * olan bir öğe `overflow` ile KIRPILAMAZ.
+   *
+   * Sonuç: piyasa bandı gibi yatay kaydırmalı bir listede, ekrandan taşan
+   * kotasyonların gizli etiketleri sayfa köküne göre konumlanıp belgeyi
+   * ~1700px'e uzatıyordu — TÜM SAYFA yatay kaydırılabilir hale geliyordu.
+   * `overflow: hidden` bile durduramıyordu, çünkü sorun kırpma değil
+   * containing block'tu.
+   *
+   * `relative` ekleyince etiket bu span'a göre konumlanıyor ve kaydırma
+   * kapsayıcısının içinde kalıyor.
+   */
   return (
-    <span className={`inline-flex items-baseline gap-1 numeric ${c.toneClass} ${className}`}>
+    <span
+      className={`relative inline-flex items-baseline gap-1 numeric ${c.toneClass} ${className}`}
+    >
       {/* Ok işareti — renkten bağımsız yön göstergesi */}
       <span aria-hidden="true">{c.symbol}</span>
       {variant === "both" ? <span>{c.text}</span> : null}
