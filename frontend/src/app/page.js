@@ -25,6 +25,7 @@ import { Fragment, Suspense } from "react";
 import siteConfig from "~/site.config";
 import { BannerAdSlot, InFeedAdSlot } from "@/components/ads";
 import PostCard from "@/components/PostCard";
+import Reveal from "@/components/Reveal";
 import Newsletter from "@/components/Newsletter";
 import SectionRow from "@/components/news/SectionRow";
 import FeedStrip from "@/components/news/FeedStrip";
@@ -170,7 +171,7 @@ export default async function HomePage() {
         </Suspense>
 
         {/* ================================================ I. PARA REHBERLERİ */}
-        <section aria-labelledby="rehberler" className="reveal">
+        <Reveal as="section" aria-labelledby="rehberler">
           <div className="mb-4 flex items-baseline justify-between gap-4 border-b border-line pb-2">
             <h2 id="rehberler" className="text-xl font-bold tracking-tight text-ink">
               Para Rehberi
@@ -221,10 +222,10 @@ export default async function HomePage() {
               </ul>
             </nav>
           ) : null}
-        </section>
+        </Reveal>
 
         {/* ============================================== J. HESAPLAMA ARAÇLARI */}
-        <section aria-labelledby="araclar" className="reveal">
+        <Reveal as="section" aria-labelledby="araclar">
           <div className="mb-4 flex items-baseline justify-between gap-4 border-b border-line pb-2">
             <h2 id="araclar" className="text-xl font-bold tracking-tight text-ink">
               Hesaplama Araçları
@@ -263,7 +264,7 @@ export default async function HomePage() {
               </Link>
             ))}
           </div>
-        </section>
+        </Reveal>
 
         {siteConfig.features.newsletter ? (
           <Newsletter variant="inline" source="home" />

@@ -9,18 +9,21 @@ import Link from "next/link";
 
 import { getUpcomingEvents, hasData } from "@/lib/providers";
 import { formatDate } from "@/lib/format";
+import Reveal from "@/components/Reveal";
 
 export default async function UpcomingEvents({ limit = 5 }) {
   const result = await getUpcomingEvents({ limit, daysAhead: 90 });
   if (!hasData(result) || result.data.length === 0) return null;
 
   return (
-    <section aria-labelledby="takvim-ozet" className="reveal">
+    <Reveal as="section" aria-labelledby="takvim-ozet">
       <div className="mb-4 flex items-baseline justify-between gap-4 border-b border-line pb-2">
         <h2 id="takvim-ozet" className="text-xl font-bold tracking-tight text-ink">
           Yaklaşan ekonomik takvim
         </h2>
-        <Link href="/takvim" className="inline-flex min-h-6 shrink-0 items-center text-sm font-medium text-link hover:underline">
+        {/* Kalıcı adres /ekonomik-takvim. /takvim 301 ile buraya yönleniyor
+            ama iç bağlantı doğrudan hedefe gitmeli — gereksiz atlama olmasın. */}
+        <Link href="/ekonomik-takvim" className="inline-flex min-h-6 shrink-0 items-center text-sm font-medium text-link hover:underline">
           Tümü<span aria-hidden="true"> →</span>
         </Link>
       </div>
@@ -45,6 +48,6 @@ export default async function UpcomingEvents({ limit = 5 }) {
           </li>
         ))}
       </ol>
-    </section>
+    </Reveal>
   );
 }

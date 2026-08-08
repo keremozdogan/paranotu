@@ -10,6 +10,7 @@
  * geçmiş referanslar değil" demenin doğru yolu budur.
  */
 
+import Reveal from "@/components/Reveal";
 import { formatRelativeTime } from "@/lib/format";
 
 function ExternalIcon() {
@@ -30,7 +31,7 @@ export default function FeedStrip({ items = [], title = "Son gelişmeler" }) {
   if (items.length === 0) return null;
 
   return (
-    <section aria-labelledby="son-gelismeler" className="reveal">
+    <Reveal as="section" aria-labelledby="son-gelismeler">
       <div className="mb-4 flex items-baseline justify-between gap-4 border-b border-line pb-2">
         <h2 id="son-gelismeler" className="text-xl font-bold tracking-tight text-ink">
           {title}
@@ -89,6 +90,6 @@ export default function FeedStrip({ items = [], title = "Son gelişmeler" }) {
         beslemelerinden otomatik derlenir. ParaNotu bu içerikleri yeniden
         yayımlamaz; başlığa tıkladığında doğrudan kaynağa gidersin.
       </p>
-    </section>
+    </Reveal>
   );
 }

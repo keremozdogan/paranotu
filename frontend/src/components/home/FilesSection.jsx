@@ -16,6 +16,7 @@
 
 import Link from "next/link";
 
+import Reveal from "@/components/Reveal";
 import SmartImage from "@/components/media/SmartImage";
 import { formatDate } from "@/lib/format";
 
@@ -90,7 +91,7 @@ export default function FilesSection({ guides = [], title = "ParaNotu Dosyaları
   if (guides.length === 0) return null;
 
   return (
-    <section aria-labelledby="paranotu-dosyalari" className="reveal">
+    <Reveal as="section" aria-labelledby="paranotu-dosyalari">
       <div className="mb-4 flex items-baseline justify-between gap-4 border-b border-line pb-2">
         <div>
           <h2 id="paranotu-dosyalari" className="text-xl font-bold tracking-tight text-ink">
@@ -110,6 +111,6 @@ export default function FilesSection({ guides = [], title = "ParaNotu Dosyaları
           </li>
         ))}
       </ul>
-    </section>
+    </Reveal>
   );
 }

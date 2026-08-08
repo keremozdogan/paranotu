@@ -9,6 +9,7 @@
 import Link from "next/link";
 
 import NewsCard from "./NewsCard";
+import Reveal from "@/components/Reveal";
 
 export default function SectionRow({ section, items, limit = 4, priority = false }) {
   if (!items || items.length === 0) return null;
@@ -17,7 +18,7 @@ export default function SectionRow({ section, items, limit = 4, priority = false
   const headingId = `bolum-${section.slug}`;
 
   return (
-    <section aria-labelledby={headingId} className="reveal">
+    <Reveal as="section" aria-labelledby={headingId}>
       <div className="mb-4 flex items-baseline justify-between gap-4 border-b border-line pb-2">
         <h2 id={headingId} className="text-xl font-bold tracking-tight text-ink">
           {section.name}
@@ -38,6 +39,6 @@ export default function SectionRow({ section, items, limit = 4, priority = false
           <NewsCard key={item.slug} item={item} priority={priority && i === 0} />
         ))}
       </div>
-    </section>
+    </Reveal>
   );
 }

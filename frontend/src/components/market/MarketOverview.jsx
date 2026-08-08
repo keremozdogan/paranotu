@@ -15,6 +15,7 @@ import Link from "next/link";
 import { getGroupQuotes, hasData, ProviderStatus } from "@/lib/providers";
 import { formatQuoteValue } from "@/lib/format";
 import QuoteChange from "./QuoteChange";
+import Reveal from "@/components/Reveal";
 
 const GROUPS = [
   { slug: "doviz", label: "Döviz" },
@@ -50,7 +51,7 @@ export default async function MarketOverview() {
   const firstResult = results[0]?.result;
 
   return (
-    <section aria-labelledby="piyasalar-ozet" className="reveal">
+    <Reveal as="section" aria-labelledby="piyasalar-ozet">
       <div className="mb-4 flex items-baseline justify-between gap-4 border-b border-line pb-2">
         <h2 id="piyasalar-ozet" className="text-xl font-bold tracking-tight text-ink">
           Piyasalarda son durum
@@ -109,6 +110,6 @@ export default async function MarketOverview() {
           </p>
         </>
       )}
-    </section>
+    </Reveal>
   );
 }
