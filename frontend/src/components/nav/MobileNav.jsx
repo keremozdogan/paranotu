@@ -28,6 +28,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useCallback, useEffect, useRef, useState } from "react";
 
+import ThemeToggle from "@/components/ThemeToggle";
+
 const FOCUSABLE =
   'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])';
 
@@ -170,6 +172,15 @@ export default function MobileNav({ items }) {
                 )}
               </ul>
             </nav>
+
+            {/* Tema seçici — başlıkta yalnızca sm ve üzeri görünüyor,
+                mobilde erişilebilir tek yer burası. */}
+            <div className="mt-6 flex items-center justify-between border-t border-line pt-4">
+              <span className="text-[11px] font-semibold uppercase tracking-wide text-muted">
+                Tema
+              </span>
+              <ThemeToggle />
+            </div>
           </div>
         </>
       ) : null}

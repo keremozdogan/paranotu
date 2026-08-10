@@ -215,6 +215,14 @@ function parseNewsFile(filename) {
     tags: data.tags ?? [],
     keywords: data.keywords ?? data.tags ?? [],
 
+    /**
+     * Kart ve haber sayfasındaki grafiğin motifi. Normalde haberin
+     * konusundan otomatik çıkarılır (`resolveMotifKey`); bu alan yalnızca
+     * otomatik seçim isabetsiz kaldığında editörün elle devraldığı kapıdır.
+     * Geçerli değerler: CategoryArt içindeki MOTIFS anahtarları.
+     */
+    motif: data.motif ?? null,
+
     /* --- Künye --- */
     author: resolveAuthor(data.author),
     editor: data.editor ? resolveAuthor(data.editor) : null,

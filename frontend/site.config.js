@@ -359,6 +359,19 @@ const siteConfig = {
       description:
         "Gram altın, ons altın ve gümüş fiyatları ile değerli metal piyasasındaki gelişmeler.",
     },
+    /* ----------------------------------------------------------- BÖLGELER
+     * "Dünya" tek bir yığın olduğunda okur aradığını bulamıyor: Fed kararı
+     * ile Çin büyüme verisi aynı listede karışıyor. Bölge kırılımı bunu
+     * ayırır ve her bölgenin kendi motifi olur (bkz. lib/motif.js).
+     *
+     * ⚠️ İçi boş bölüm "thin content"tir: Google için de okur için de kötü.
+     * Bu yüzden üçü de `active: false` başlıyor. Bir bölgeye ait birkaç
+     * haber girdiğinde o bölümü `active: true` yap — hepsini birden açma.
+     */
+    { slug: "amerika", name: "Amerika Ekonomisi", shortName: "Amerika", active: false, inNav: false, description: "Fed kararları, ABD makro verileri ve Wall Street endeksleri." },
+    { slug: "avrupa", name: "Avrupa Ekonomisi", shortName: "Avrupa", active: false, inNav: false, description: "Avrupa Merkez Bankası, euro bölgesi verileri ve Avrupa borsaları." },
+    { slug: "asya", name: "Asya Ekonomisi", shortName: "Asya", active: false, inNav: false, description: "Çin, Japonya ve Asya piyasalarındaki gelişmeler." },
+
     /* İçerik akışı başlayınca açılacaklar — şimdilik boş kalmasın diye kapalı. */
     { slug: "kripto", name: "Kripto Para", shortName: "Kripto", active: false, inNav: false, description: "Kripto para piyasasındaki gelişmeler." },
     { slug: "emtia", name: "Emtia ve Enerji", shortName: "Emtia", active: false, inNav: false, description: "Petrol, doğal gaz ve emtia piyasaları." },

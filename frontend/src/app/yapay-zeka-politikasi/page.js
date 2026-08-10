@@ -39,6 +39,17 @@ export default function AiPolicyPage() {
       <h2>Nerede kullanılabilir</h2>
       <ul>
         <li>
+          <strong>Okur için haber özeti</strong> — haber sayfalarındaki &quot;Yapay zekâ ile
+          özetle&quot; düğmesi. Özet <em>yalnızca</em> o haberin kendi metnine dayanır; model
+          dışarıdan bilgi ekleyemez, rakam üretemez, yorum yapamaz. Çıktı her zaman yapay
+          zekâ ürünü olarak etiketlenir ve haberin yerine geçmez.
+        </li>
+        <li>
+          <strong>Günün özeti</strong> — haber listesinin başındaki paragraf. Yalnızca o gün
+          yayımladığımız haberlerin başlık ve spotlarından üretilir, aynı sınırlarla ve aynı
+          etiketle.
+        </li>
+        <li>
           <strong>Taslak ve düzenleme</strong> — metni sadeleştirme, başlık alternatifleri
           üretme, yazım denetimi.
         </li>
@@ -83,6 +94,16 @@ export default function AiPolicyPage() {
         Bir içeriğin oluşturulmasında yapay zekâ belirgin bir rol oynadıysa bunu içerikte
         belirtiriz. Rutin düzenleme ve yazım denetimi için ayrı etiket kullanmayız — bu, imla
         denetleyicisi kullanmak gibidir.
+      </p>
+      <p>
+        Okura gösterilen özetler her zaman etiketlidir: hem panelin altında hem günün özetinin
+        altında, metnin yapay zekâ ile üretildiği ve haberin yerine geçmediği yazar. Etiketsiz
+        bir yapay zekâ çıktısı yayımlamayız.
+      </p>
+      <p>
+        Özet üretilirken haber metninin içinde modele yönelik bir talimat bulunması ihtimaline
+        karşı, model o metni <em>veri</em> olarak işler; içindeki yönergeleri uygulamaz. Bu,
+        dışarıdan gelen içeriğin sistemi yönlendirmesini engellemek içindir.
       </p>
 
       <h2>Sorumluluk</h2>

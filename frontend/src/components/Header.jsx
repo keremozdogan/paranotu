@@ -22,6 +22,7 @@
 import siteConfig from "~/site.config";
 import Logo from "./Logo";
 import SearchDialog from "./SearchDialog";
+import ThemeToggle from "./ThemeToggle";
 import DesktopNav from "./nav/DesktopNav";
 import MobileNav from "./nav/MobileNav";
 import MarketTicker from "./market/MarketTicker";
@@ -53,8 +54,11 @@ export default function Header() {
           <Logo />
           <DesktopNav items={nav} />
 
-          <div className="ml-auto flex items-center gap-1">
+          <div className="ml-auto flex items-center gap-1.5">
             {features.search ? <SearchDialog index={searchIndex} /> : null}
+            {/* Tema seçici — dar ekranda yer kaplamasın diye gizlenir;
+                mobilde menü içinden erişilir. */}
+            <ThemeToggle className="hidden sm:inline-flex" />
             <MobileNav items={mobileNav} />
           </div>
         </div>

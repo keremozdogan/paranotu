@@ -19,6 +19,7 @@ import MdxContent from "@/components/mdx/MdxContent";
 import ShareButtons from "@/components/ShareButtons";
 import TableOfContents from "@/components/TableOfContents";
 import NewsCard from "@/components/news/NewsCard";
+import CategoryArt from "@/components/media/CategoryArt";
 import { ContentEndAdSlot, SidebarAdSlot } from "@/components/ads";
 import Disclaimer from "@/components/mdx/Disclaimer";
 import { getAllNews, getNewsBySlug, getRelatedNews, activeSections } from "@/lib/news";
@@ -26,6 +27,9 @@ import { extractHeadings } from "@/lib/posts";
 import { formatDate, formatTime, absoluteUrl } from "@/lib/format";
 import { buildMetadata, JsonLd, newsArticleJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 import { editorialIndexability, resolveRobots } from "@/lib/indexability";
+import { resolveMotifKey } from "@/lib/motif";
+import { isAiConfigured } from "@/lib/ai";
+import AiSummaryPanel from "@/components/ai/AiSummaryPanel";
 import { getClusterSources } from "@/lib/feed";
 
 export const dynamicParams = false;
@@ -87,6 +91,31 @@ export default async function NewsDetailPage({ params }) {
   const headings = extractHeadings(item.content);
   const showToc = siteConfig.features.tableOfContents && headings.length >= 3;
   const updated = item.updatedAt && item.updatedAt !== item.publishedAt;
+
+  /* Yapay zekâ özeti düğmesi çizilsin mi? Sunucuda karar verilir; anahtar
+     istemciye hiç gitmez. */
+  const aiHazir = isAiConfigured();
+
+  /* "Neden önemli?" kutusunun içeriği. Boş olanlar elenir; hiçbiri yoksa
+     kutu hiç çizilmez (eski haberler bu alanlar olmadan da yayımlanabilir,
+     yalnızca indexlenemez). */
+  const whyBlocks = [
+    { label: "Kısaca", text: item.whyItMatters },
+    { label: "Türkiye'ye etkisi", text: item.turkeyImpact },
+    { label: "Vatandaşa etkisi", text: item.citizenImpact },
+    { label: "Piyasaya etkisi", text: item.marketImpactNote },
+  ].filter((b) => typeof b.text === "string" && b.text.trim().length > 0);
+
+  /* Fotoğrafsız haberlerde çizilecek grafiğin motifi. Kartla birebir aynı
+     çağrı — okur kartta hangi grafiği gördüyse haberde de onu görür. */
+  const artMotifKey = resolveMotifKey({
+    motif: item.motif,
+    section: item.section?.slug,
+    tags: item.tags,
+    symbols: item.relatedSymbols,
+    title: item.title,
+    summary: item.summary,
+  });
 
   return (
     <article className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
@@ -204,7 +233,32 @@ export default async function NewsDetailPage({ params }) {
             </span>
           </figcaption>
         </figure>
-      ) : null}
+      ) : (
+        /*
+         * Lisanslı fotoğraf yoksa kategori grafiği çizilir.
+         *
+         * Daha önce burada HİÇBİR ŞEY yoktu: kartta grafik gören okur
+         * habere girince çıplak bir metinle karşılaşıyordu. Grafik hem bu
+         * kopukluğu kapatır hem de sosyal paylaşımda kartla tutarlı kalır.
+         *
+         * Motif haberin konusundan seçilir (kartla AYNI `resolveMotifKey`
+         * çağrısı) — böylece kartta gördüğü grafiğin aynısı burada da
+         * çıkar; `seed` de aynı olduğu için varyantı bile aynıdır.
+         *
+         * `aria-hidden` CategoryArt'ın kendi içinde: dekoratiftir, haberin
+         * anlamını başlık taşır. Bir olayın fotoğrafı sanılmaması için
+         * bilinçli olarak soyut bir dil kullanılır (bkz. CategoryArt).
+         */
+        <figure className="mx-auto mt-6 max-w-[80ch]">
+          <div className="relative aspect-[16/9] overflow-hidden rounded-brand bg-subtle">
+            <CategoryArt
+              category={artMotifKey}
+              seed={item.slug}
+              showLabel
+            />
+          </div>
+        </figure>
+      )}
 
       {/* --------------------------------------------------- CANLI AKIŞ */}
       {item.isLive && item.liveUpdates.length > 0 ? (
@@ -240,10 +294,56 @@ export default async function NewsDetailPage({ params }) {
         ) : null}
 
         <div className="min-w-0 flex-1">
+          {/* ------------------------------------------- NEDEN ÖNEMLİ?
+              Yayın kapısı (lib/indexability.js) bir haberin indexlenmesi
+              için `whyItMatters` / `turkeyImpact` / `citizenImpact`
+              alanlarından en az ikisinin dolu olmasını şart koşuyor —
+              "API içeriğini birkaç kelime değiştirip haber üretmeyi"
+              engelleyen kapı bu.
+
+              Ama bu alanlar hiçbir yerde ÇİZİLMİYORDU: kapı özgün değer
+              yazılmasını zorunlu tutuyor, okur ise o değeri hiç görmüyordu.
+              Yazılan metnin okura ulaşması için burada gösteriliyor.
+
+              Metnin gövdesinden önce, özet niteliğinde duruyor: okur
+              haberin kendisini okumadan önce "bu beni neden ilgilendiriyor"
+              sorusunun cevabını görüyor. */}
+          {whyBlocks.length > 0 ? (
+            <section
+              aria-labelledby="neden-onemli"
+              className="mx-auto mb-8 max-w-[68ch] rounded-brand border border-line bg-subtle p-5"
+            >
+              <h2
+                id="neden-onemli"
+                className="text-sm font-bold uppercase tracking-wide text-accent-700"
+              >
+                Neden önemli?
+              </h2>
+              <dl className="mt-3 space-y-3">
+                {whyBlocks.map((block) => (
+                  <div key={block.label}>
+                    <dt className="text-xs font-semibold uppercase tracking-wide text-muted">
+                      {block.label}
+                    </dt>
+                    <dd className="mt-1 text-sm leading-relaxed text-ink">{block.text}</dd>
+                  </div>
+                ))}
+              </dl>
+            </section>
+          ) : null}
+
           {/* Okunabilir genişlik — geniş ekranda satır uzamasın. */}
           <div className="prose-site mx-auto max-w-[68ch]">
             <MdxContent source={item.content} />
           </div>
+
+          {/* Yapay zekâ özeti — yalnızca sağlayıcı yapılandırılmışsa çizilir.
+              Anahtar yoksa düğme hiç görünmez (bozuk buton göstermeyiz). */}
+          {aiHazir ? (
+            <div className="mx-auto mt-8 max-w-[68ch]">
+              <AiSummaryPanel slug={item.slug} title={item.title} />
+            </div>
+          ) : null}
 
           <div className="mx-auto mt-8 max-w-[68ch]">
             <ShareButtons

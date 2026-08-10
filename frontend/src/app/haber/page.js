@@ -9,6 +9,7 @@ import { getRankedNews, getSectionsWithCounts } from "@/lib/news";
 import { buildMetadata, JsonLd, breadcrumbJsonLd } from "@/lib/seo";
 import NewsCard from "@/components/news/NewsCard";
 import EmptyState from "@/components/news/EmptyState";
+import DailyDigest from "@/components/ai/DailyDigest";
 
 export const metadata = buildMetadata({
   title: "Ekonomi Haberleri",
@@ -69,6 +70,12 @@ export default function NewsIndexPage() {
         </div>
       ) : (
         <>
+          {/* Günün özeti — sayfa `revalidate = 900` ile ISR'li olduğu için
+              model çağrısı 15 dakikada bir yapılır, her ziyaretçide değil. */}
+          <div className="mt-6">
+            <DailyDigest items={items.slice(0, 12)} />
+          </div>
+
           <div className="mt-8">
             <NewsCard item={lead} size="lead" priority />
           </div>

@@ -22,6 +22,7 @@ import Link from "next/link";
 
 import SmartImage from "@/components/media/SmartImage";
 import { formatRelativeTime } from "@/lib/format";
+import { resolveMotifKey } from "@/lib/motif";
 
 /** Son dakika / canlı / öne çıkan rozetleri. */
 function Badges({ item }) {
@@ -109,10 +110,21 @@ export default function NewsCard({ item, size = "default", priority = false }) {
         className={isLead ? "flex flex-1 flex-col sm:flex-row" : "flex flex-1 flex-col"}
       >
         {/* Görsel: lisanslı fotoğraf varsa o, yoksa kategori grafiği.
-            Her iki durumda da oran sabit → CLS yok. */}
+            Her iki durumda da oran sabit → CLS yok.
+
+            Motif haberin KENDİ konusundan seçilir (sembol/etiket/başlık),
+            yalnızca bölümünden değil: aynı bölümdeki enflasyon ve asgari
+            ücret haberleri farklı grafik alır. bkz. `resolveMotifKey`. */}
         <SmartImage
           image={item.image ? { ...item.image, src: item.image.thumbnail ?? item.image.src } : null}
-          category={item.section?.slug}
+          category={resolveMotifKey({
+            motif: item.motif,
+            section: item.section?.slug,
+            tags: item.tags,
+            symbols: item.relatedSymbols,
+            title: item.title,
+            summary: item.summary,
+          })}
           seed={item.slug}
           alt={item.image?.alt ?? ""}
           ratio={isLead ? "16/9" : "16/9"}

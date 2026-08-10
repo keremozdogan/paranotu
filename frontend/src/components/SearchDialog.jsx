@@ -23,6 +23,10 @@ export default function SearchDialog({ index = [] }) {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
   const inputRef = useRef(null);
+  const dialogRef = useRef(null);
+  /* Arama açılmadan önce odakta olan öğe — kapanınca oraya geri döneriz.
+     Klavye kullanıcısı kapattığında odak sayfanın başına düşmemeli. */
+  const restoreFocusRef = useRef(null);
 
   /* Kapatma tek yerden — hem paneli kapatır hem aramayı temizler,
      böylece bir sonraki açılış boş kutuyla başlar. */
@@ -49,6 +53,76 @@ export default function SearchDialog({ index = [] }) {
      koşulsuz setState cascading render tetikliyordu. */
   useEffect(() => {
     if (open) inputRef.current?.focus();
+  }, [open]);
+
+  /**
+   * ARKA PLAN KAYDIRMA KİLİDİ
+   *
+   * Arama açıkken tekerlek çevrilince arkadaki sayfa kayıyordu; kutu
+   * yerinde durduğu için site "donmuş" hissi veriyordu.
+   *
+   * `overflow: hidden` tek başına yetmez: kaydırma çubuğu kaybolunca
+   * sayfa genişler ve içerik yatay olarak zıplar. Çubuğun genişliği kadar
+   * padding ekleyerek bunu telafi ediyoruz.
+   */
+  useEffect(() => {
+    if (!open) return undefined;
+
+    const { body } = document;
+    const oncekiOverflow = body.style.overflow;
+    const oncekiPadding = body.style.paddingRight;
+    const cubukGenisligi = window.innerWidth - document.documentElement.clientWidth;
+
+    body.style.overflow = "hidden";
+    if (cubukGenisligi > 0) body.style.paddingRight = `${cubukGenisligi}px`;
+
+    return () => {
+      body.style.overflow = oncekiOverflow;
+      body.style.paddingRight = oncekiPadding;
+    };
+  }, [open]);
+
+  /**
+   * ODAK YÖNETİMİ — Tab tuşu kutunun içinde dönsün.
+   *
+   * `aria-modal="true"` ekran okuyucuya "arkası kapalı" der ama klavye
+   * odağını KISITLAMAZ. Bu olmadan Tab'a basan kullanıcı görünmeyen arka
+   * plan bağlantılarında geziniyor, nerede olduğunu göremiyordu.
+   */
+  useEffect(() => {
+    if (!open) return undefined;
+
+    restoreFocusRef.current = document.activeElement;
+
+    const onKeyDown = (e) => {
+      if (e.key !== "Tab") return;
+      const kutu = dialogRef.current;
+      if (!kutu) return;
+
+      const odaklanabilir = kutu.querySelectorAll(
+        'a[href], button:not([disabled]), input, [tabindex]:not([tabindex="-1"])',
+      );
+      if (odaklanabilir.length === 0) return;
+
+      const ilk = odaklanabilir[0];
+      const son = odaklanabilir[odaklanabilir.length - 1];
+
+      if (e.shiftKey && document.activeElement === ilk) {
+        e.preventDefault();
+        son.focus();
+      } else if (!e.shiftKey && document.activeElement === son) {
+        e.preventDefault();
+        ilk.focus();
+      }
+    };
+
+    document.addEventListener("keydown", onKeyDown);
+    return () => {
+      document.removeEventListener("keydown", onKeyDown);
+      /* Odağı açılıştaki yerine geri ver. */
+      const geri = restoreFocusRef.current;
+      if (geri && typeof geri.focus === "function") geri.focus();
+    };
   }, [open]);
 
   const results = useMemo(() => {
@@ -91,17 +165,37 @@ export default function SearchDialog({ index = [] }) {
       </button>
 
       {open ? (
-        <div
-          className="fixed inset-0 z-[60] flex items-start justify-center bg-black/40 p-4 pt-[10vh] backdrop-blur-sm"
-          onClick={close}
-          role="presentation"
-        >
+        <>
+          {/*
+            KARARTMA KATMANI — z-40, yani YAPIŞKAN BAŞLIĞIN (z-50) ALTINDA.
+
+            Önce `inset-0 z-[60]` idi ve üstteki navigasyonu da karartıyordu:
+            arama açılınca menü ve bölüm sekmeleri gri bir perdenin altında
+            kalıyor, site bozulmuş gibi görünüyordu. Karartma artık yalnızca
+            içeriğin üzerine düşer; başlık okunur ve net kalır.
+
+            ⚠️ z sırası: scrim 40 < başlık 50 < arama kutusu 60.
+            Bu sırayı bozarsan ya başlık kararır ya kutu perdenin altında
+            kalır.
+          */}
           <div
+            className="fixed inset-0 z-40 bg-black/40 backdrop-blur-sm"
+            onClick={close}
+            role="presentation"
+          />
+
+          {/*
+            Kutunun kapsayıcısı başlıktan yüksekte durur ama
+            `pointer-events-none` olduğu için tıklamalar altındaki başlığa
+            geçer — arama açıkken menüye tıklanabilir.
+          */}
+          <div className="pointer-events-none fixed inset-0 z-[60] flex items-start justify-center p-4 pt-[10vh]">
+          <div
+            ref={dialogRef}
             role="dialog"
             aria-modal="true"
             aria-label="Yazılarda ara"
-            onClick={(e) => e.stopPropagation()}
-            className="w-full max-w-xl overflow-hidden rounded-brand border border-line bg-canvas shadow-2xl"
+            className="pointer-events-auto w-full max-w-xl overflow-hidden rounded-brand border border-line bg-canvas shadow-2xl"
           >
             <div className="flex items-center gap-3 border-b border-line px-4">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" className="text-muted">
@@ -153,7 +247,8 @@ export default function SearchDialog({ index = [] }) {
               ) : null}
             </div>
           </div>
-        </div>
+          </div>
+        </>
       ) : null}
     </>
   );
