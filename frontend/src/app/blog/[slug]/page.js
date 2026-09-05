@@ -11,6 +11,7 @@ import LiveRates from "@/components/LiveRates";
 import TableOfContents from "@/components/TableOfContents";
 import ShareButtons from "@/components/ShareButtons";
 import MdxContent from "@/components/mdx/MdxContent";
+import ReadingProgress from "@/components/ReadingProgress";
 import {
   getPostBySlug,
   getAllSlugs,
@@ -76,6 +77,8 @@ export default async function PostPage({ params }) {
 
   return (
     <article className="mx-auto max-w-6xl px-4 py-10 sm:px-6">
+      <ReadingProgress />
+
       <JsonLd data={articleJsonLd(post)} />
       <JsonLd
         data={breadcrumbJsonLd([

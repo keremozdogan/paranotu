@@ -16,14 +16,16 @@ import { notFound } from "next/navigation";
 
 import siteConfig from "~/site.config";
 import MdxContent from "@/components/mdx/MdxContent";
+import ReadingProgress from "@/components/ReadingProgress";
+import EditorPicks from "@/components/news/EditorPicks";
 import ShareButtons from "@/components/ShareButtons";
 import TableOfContents from "@/components/TableOfContents";
 import NewsCard from "@/components/news/NewsCard";
 import CategoryArt from "@/components/media/CategoryArt";
 import { ContentEndAdSlot, SidebarAdSlot } from "@/components/ads";
 import Disclaimer from "@/components/mdx/Disclaimer";
-import { getAllNews, getNewsBySlug, getRelatedNews, activeSections } from "@/lib/news";
-import { extractHeadings } from "@/lib/posts";
+import { getAllNews, getNewsBySlug, getRelatedNews, getRankedNews, activeSections } from "@/lib/news";
+import { extractHeadings, getPostSummaries } from "@/lib/posts";
 import { formatDate, formatTime, absoluteUrl } from "@/lib/format";
 import { buildMetadata, JsonLd, newsArticleJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 import { editorialIndexability, resolveRobots } from "@/lib/indexability";
@@ -85,6 +87,30 @@ export default async function NewsDetailPage({ params }) {
   if (!item || item.section?.slug !== sectionSlug) notFound();
 
   const related = getRelatedNews(slug);
+
+  /* Yan sütun listesi — okunan haber ve ilgili haberler hariç tutulur ki
+     aynı başlık sayfada iki yerde birden görünmesin. */
+  const shown = new Set([slug, ...related.map((r) => r.slug)]);
+  const sidebarPicks = [
+    ...getRankedNews(8)
+      .filter((n) => !shown.has(n.slug))
+      .map((n) => ({
+        href: `/haber/${n.section.slug}/${n.slug}`,
+        title: n.title,
+        kicker: n.section?.shortName ?? n.section?.name,
+        publishedAt: n.publishedAt,
+      })),
+    /* Haber akışı henüz seyrekken sütun tek maddede kalıp hiç çizilmiyordu
+       ve yan sütunda yalnızca reklam görünüyordu. Sitenin kalıcı en güçlü
+       içeriği olan rehberler listeyi tamamlıyor; akış yoğunlaştığında
+       haberler doğal olarak öne geçer. */
+    ...getPostSummaries().map((g) => ({
+      href: `/blog/${g.slug}`,
+      title: g.title,
+      kicker: g.category?.name ?? "Rehber",
+      publishedAt: g.publishedAt ?? g.date,
+    })),
+  ].slice(0, 5);
   /* Bu haber bir olay kümesine bağlıysa, aynı olayı bildiren diğer
      kaynakları D1'den çek. D1 yoksa boş dizi döner. */
   const clusterSources = await getClusterSources(item.clusterId);
@@ -119,6 +145,8 @@ export default async function NewsDetailPage({ params }) {
 
   return (
     <article className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
+      <ReadingProgress />
+
       <JsonLd data={newsArticleJsonLd(item)} />
       <JsonLd
         data={breadcrumbJsonLd([
@@ -462,8 +490,14 @@ export default async function NewsDetailPage({ params }) {
         </div>
 
         {/* Sağ sütun — yalnızca xl ve üstü. Dar ekranda hiç render edilmez. */}
+        {/* Sağ sütun — yalnızca xl ve üstü. Dar ekranda hiç render edilmez.
+            İçinde SADECE reklam vardı; okura değer veren bir liste eklendi,
+            reklam onun altına indi. */}
         <aside className="hidden w-[300px] shrink-0 self-start xl:block">
-          <SidebarAdSlot sticky />
+          <div className="sticky top-24 flex flex-col gap-8">
+            <EditorPicks title="Öne çıkanlar" items={sidebarPicks} />
+            <SidebarAdSlot />
+          </div>
         </aside>
       </div>
 
