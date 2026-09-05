@@ -379,12 +379,16 @@ const siteConfig = {
   ],
 
   /* ------------------------------------------------------------- YAZARLAR */
+  /* İçerik kişi adıyla değil, yayının kendi adıyla imzalanıyor. Article
+   * şemasındaki `author` alanı boş kalmasın diye kayıt duruyor: Google
+   * yazarı belirsiz içeriği zayıf sinyal sayar. Tekrar gerçek bir kişiye
+   * dönmek istenirse yalnızca bu blok değişir — imza, künye ve JSON-LD
+   * hepsi buradan besleniyor. */
   authors: {
     editor: {
-      name: "Kerem Özdoğan",
-      title: "Yazar",
-      avatar: "/authors/editor.png",
-      bio: "Yazılım uzmanı. Finansal okuryazarlığa meraklı; birikim ve bütçe konusunda öğrendiklerini sade bir dille anlatıyor.",
+      name: "ParaNotu",
+      title: "Editör Masası",
+      bio: "Kişisel finans ve ekonomi içerikleri ParaNotu editör masası tarafından hazırlanır; her rehber yayın öncesi resmî kaynaklarla karşılaştırılır.",
     },
   },
   defaultAuthor: "editor",
@@ -398,7 +402,7 @@ const siteConfig = {
     youtube: "",
     linkedin: "",
     github: "",
-    email: "keremozdogannn@gmail.com",
+    email: "info@paranotu.com",
   },
 
   /* -------------------------------------------------------------- REKLAM */

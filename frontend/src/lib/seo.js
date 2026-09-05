@@ -169,7 +169,7 @@ export function articleJsonLd(post) {
     dateModified: post.updated ?? post.date,
     inLanguage: siteConfig.lang,
     mainEntityOfPage: { "@type": "WebPage", "@id": absoluteUrl(`/blog/${post.slug}`) },
-    author: { "@type": "Person", name: post.author?.name ?? siteConfig.name },
+    author: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
     publisher: {
       "@type": "Organization",
       name: siteConfig.name,
@@ -206,9 +206,9 @@ export function newsArticleJsonLd(item) {
     mainEntityOfPage: { "@type": "WebPage", "@id": url },
     url,
     author: {
-      "@type": "Person",
-      name: item.author?.name ?? siteConfig.name,
-      ...(item.author?.id ? { url: absoluteUrl(`/yazarlar/${item.author.id}`) } : {}),
+      "@type": "Organization",
+      name: siteConfig.name,
+      url: siteConfig.url,
     },
     publisher: {
       "@type": "Organization",

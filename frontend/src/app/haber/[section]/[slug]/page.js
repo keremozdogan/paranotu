@@ -200,18 +200,6 @@ export default async function NewsDetailPage({ params }) {
 
         {/* --------------------------------------------------------- KÜNYE */}
         <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 border-y border-line py-3 text-sm text-muted">
-          {item.author ? (
-            <span>
-              <span className="text-muted">Yazan </span>
-              <Link
-                href={`/yazarlar/${item.author.id}`}
-                className="font-medium text-ink hover:underline"
-              >
-                {item.author.name}
-              </Link>
-            </span>
-          ) : null}
-
           {item.editor ? (
             <span className="text-xs">Editör: {item.editor.name}</span>
           ) : null}

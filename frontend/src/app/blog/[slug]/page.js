@@ -121,11 +121,6 @@ export default async function PostPage({ params }) {
         <p className="mt-3 text-lg leading-relaxed text-muted">{post.description}</p>
 
         <div className="mt-5 flex flex-wrap items-center gap-x-3 gap-y-2 border-y border-line py-4 text-sm text-muted">
-          <span className="flex h-8 w-8 items-center justify-center rounded-full bg-accent-100 text-xs font-bold text-accent-700">
-            {post.author?.name?.charAt(0)}
-          </span>
-          <span className="font-medium text-ink">{post.author?.name}</span>
-          <span aria-hidden="true">·</span>
           <time dateTime={post.date}>{formatDate(post.date)}</time>
           {siteConfig.features.readingTime ? (
             <>

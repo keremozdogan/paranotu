@@ -52,7 +52,6 @@ export default function sitemap() {
     { path: "/son-dakika", changeFrequency: "hourly", priority: 0.8, lastModified: latest },
     { path: "/piyasalar", changeFrequency: "hourly", priority: 0.8, lastModified: latest },
     { path: "/ekonomik-takvim", changeFrequency: "daily", priority: 0.7, lastModified: latest },
-    { path: "/hakkinda", changeFrequency: "yearly", priority: 0.4, lastModified: latest },
     { path: "/iletisim", changeFrequency: "yearly", priority: 0.3, lastModified: latest },
     /* Güven ve şeffaflık sayfaları — E-E-A-T sinyali, indekslenmeli. */
     { path: "/kunye", changeFrequency: "yearly", priority: 0.4, lastModified: latest },

@@ -48,8 +48,7 @@ export default function ImprintPage() {
             <li key={id}>
               <strong>{author.name}</strong>
               {author.title ? ` — ${author.title}` : ""}
-              {author.bio ? <>. {author.bio}</> : null}{" "}
-              <Link href={`/yazarlar/${id}`}>Profil</Link>
+              {author.bio ? <>. {author.bio}</> : null}
             </li>
           ))}
         </ul>

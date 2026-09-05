@@ -80,9 +80,9 @@ export default async function GuidePage({ params }) {
     mainEntityOfPage: { "@type": "WebPage", "@id": absoluteUrl(guide.href) },
     url: absoluteUrl(guide.href),
     author: {
-      "@type": "Person",
-      name: guide.author?.name ?? siteConfig.name,
-      ...(guide.author?.id ? { url: absoluteUrl(`/yazarlar/${guide.author.id}`) } : {}),
+      "@type": "Organization",
+      name: siteConfig.name,
+      url: siteConfig.url,
     },
     publisher: { "@type": "Organization", name: siteConfig.name, url: siteConfig.url },
     articleSection: guide.hub.name,
@@ -145,14 +145,6 @@ export default async function GuidePage({ params }) {
         {guide.summary ? <p className="standfirst mt-4">{guide.summary}</p> : null}
 
         <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-muted">
-          {guide.author ? (
-            <span>
-              <span>Yazan </span>
-              <Link href={`/yazarlar/${guide.author.id}`} className="font-medium text-ink hover:underline">
-                {guide.author.name}
-              </Link>
-            </span>
-          ) : null}
           <span>{guide.readingTime} dk okuma</span>
         </div>
       </header>

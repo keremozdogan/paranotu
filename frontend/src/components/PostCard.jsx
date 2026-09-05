@@ -114,13 +114,6 @@ export default function PostCard({ post, variant = "default", priority = false }
         >
           {post.description}
         </p>
-
-        <div className="mt-4 flex items-center gap-2 pt-1 text-xs text-muted">
-          <span className="flex h-6 w-6 items-center justify-center rounded-full bg-accent-100 text-[10px] font-bold text-accent-700">
-            {post.author?.name?.charAt(0) ?? "?"}
-          </span>
-          <span>{post.author?.name}</span>
-        </div>
       </div>
     </article>
   );
