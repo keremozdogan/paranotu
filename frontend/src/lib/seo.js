@@ -240,6 +240,31 @@ export function newsArticleJsonLd(item) {
 }
 
 /** @param {Array<{name: string, path: string}>} items */
+/**
+ * FAQPage şeması — "... nedir?" tipi içeriklerde arama sonuçlarında
+ * soru-cevap olarak görünme şansı verir.
+ *
+ * ⚠️ GOOGLE KURALI: şemaya giren soru ve cevabın sayfada da GÖRÜNÜYOR
+ * olması gerekir. Yalnızca structured data'da olup sayfada olmayan FAQ,
+ * yapılandırılmış veri ihlalidir. Bu yüzden bu fonksiyonu çağıran sayfa
+ * <FaqSection /> bileşenini de mutlaka render etmelidir.
+ *
+ * Cevaplar düz metin olarak gider — markdown veya HTML işlenmez.
+ */
+export function faqJsonLd(faq = []) {
+  const items = faq.filter((f) => f?.q && f?.a);
+  if (items.length === 0) return null;
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: items.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
+}
+
 export function breadcrumbJsonLd(items) {
   return {
     "@context": "https://schema.org",

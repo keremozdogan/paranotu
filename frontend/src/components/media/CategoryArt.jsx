@@ -535,6 +535,15 @@ const MOTIFS = {
   sirketler: { arts: [Document, LineChart], tone: "accent", label: "Şirketler" },
 
   /* Rehber hub'ları ve kategoriler */
+  /* --- 8 ANA KATEGORİ (evergreen bilgi merkezi yapısı) ------------------
+     `altin`, `doviz`, `borsa`, `kredi`, `vergi` zaten aşağıda tanımlı.
+     Aşağıdaki üçü yeni kategorilerle birlikte eklendi. Eski hub anahtarları
+     (enflasyon, faiz, butce, asgari-ucret) SİLİNMEDİ: eski haberler ve
+     etiketler hâlâ onlara çözümlenebiliyor. */
+  ekonomi: { arts: [PriceSteps, LineChart, Bars], tone: "primary", label: "Ekonomi" },
+  yatirim: { arts: [Vault, Candles, Bullion], tone: "accent", label: "Yatırım" },
+  "kisisel-finans": { arts: [Calculator, Payslip, Vault], tone: "primary", label: "Kişisel Finans" },
+
   enflasyon: { arts: [Basket, PriceSteps, Bars], tone: "primary", label: "Enflasyon" },
   "asgari-ucret": { arts: [Payslip, Bars, Document], tone: "primary", label: "Asgari Ücret" },
   faiz: { arts: [Percent, LineChart], tone: "accent", label: "Faiz" },

@@ -1,0 +1,146 @@
+---
+title: "Faiz Nedir? Basit ve Bileşik Faiz Arasındaki Fark"
+summary: "Faiz, paranın zaman değerinin fiyatıdır. Basit faiz ile bileşik faizin nasıl hesaplandığını, aradaki farkın uzun vadede neden büyüdüğünü ve politika faizinin cebine nasıl yansıdığını örneklerle anlatıyoruz."
+seoTitle: "Faiz Nedir? Basit ve Bileşik Faiz Farkı ve Hesaplama"
+seoDescription: "Faiz nedir, nasıl hesaplanır? Basit faiz ile bileşik faiz arasındaki fark, formülleri ve politika faizinin krediye ve mevduata etkisi."
+keywords:
+  - "faiz nedir"
+  - "basit faiz"
+  - "bileşik faiz"
+  - "faiz hesaplama"
+  - "bileşik faiz formülü"
+
+publishedAt: 2026-09-05
+updatedAt: 2026-09-05
+nextReviewAt: 2026-12-05
+updateTrigger: tcmb_ppk
+freshnessStatus: current
+
+author: editor
+isFile: true
+filePriority: 10
+schemaType: Article
+
+related:
+  - "ekonomi/faizin-kredi-ve-mevduata-etkisi"
+  - "ekonomi/enflasyonun-maaslara-etkisi"
+
+faq:
+  - q: "Faiz nedir?"
+    a: "Faiz, ödünç alınan paranın kullanım bedelidir. Borç alan taraf, parayı bir süre kullandığı için anaparanın üzerine ek bir tutar öder; parayı veren taraf ise bu tutarı getiri olarak alır."
+  - q: "Basit faiz ile bileşik faiz arasındaki fark nedir?"
+    a: "Basit faizde getiri her dönem yalnızca ilk anapara üzerinden hesaplanır. Bileşik faizde önceki dönemlerde kazanılan faiz de anaparaya eklenir ve sonraki dönemde o da faiz kazanır. Fark kısa vadede küçüktür, vade uzadıkça hızla büyür."
+  - q: "Bileşik faiz nasıl hesaplanır?"
+    a: "Bileşik faizde son tutar, anaparanın (1 + faiz oranı) çarpanının dönem sayısı kadar üssüyle çarpılmasıyla bulunur. Örneğin 100 birim para yıllık yüzde 10 ile 3 yıl işlerse sonuç 100 × 1,10 × 1,10 × 1,10 = 133,1 birimdir."
+  - q: "Politika faizi ile mevduat faizi aynı şey midir?"
+    a: "Hayır. Politika faizi Merkez Bankası'nın bankalara uyguladığı referans orandır. Mevduat ve kredi faizleri bu orandan etkilenir ama bankalar tarafından ayrıca belirlenir; ikisi genellikle birbirinden farklıdır."
+
+sources:
+  - name: "TCMB — Para Politikası Kurulu Kararları"
+    url: "https://www.tcmb.gov.tr/wps/wcm/connect/TR/TCMB+TR/PPK/PPK+Toplanti+Kararlari"
+    kind: official
+  - name: "TCMB — Faiz Oranları"
+    url: "https://www.tcmb.gov.tr/"
+    kind: official
+---
+
+Faiz, en yalın haliyle **paranın kirasıdır**. Bir evi bir süre kullandığın için kira ödersin; başkasının parasını bir süre kullandığın için de faiz ödersin. Yönü değişince tanım aynı kalır: parayı sen verdiysen faiz senin getirindir.
+
+Bu yazıda faizin nasıl hesaplandığını, basit ve bileşik faiz arasındaki farkın neden vade uzadıkça büyüdüğünü ve Merkez Bankası'nın belirlediği politika faizinin cebine hangi yollardan ulaştığını anlatıyoruz.
+
+<RakamTablosu ids={["politikaFaizi", "tufeYillik"]} />
+
+## Faizin üç bileşeni
+
+Bir faiz oranı üç sorunun cevabından oluşur:
+
+- **Anapara** — ödünç verilen ya da yatırılan tutar.
+- **Oran** — genellikle yıllık yüzde olarak belirtilir.
+- **Vade** — paranın kaç dönem boyunca işlediği.
+
+Bu üçü sabitken faizin nasıl işlediğini belirleyen tek şey kalır: kazanılan faizin anaparaya eklenip eklenmediği. Cevap "hayır" ise basit, "evet" ise bileşik faizden söz ediyoruz.
+
+## Basit faiz
+
+Basit faizde her dönem yalnızca **ilk anapara** üzerinden hesap yapılır. Kazanılan faiz kenara ayrılır, bir sonraki dönemin hesabına girmez.
+
+Formül şudur:
+
+**Faiz = Anapara × Oran × Dönem sayısı**
+
+100.000 ₺ yıllık %40 basit faizle 3 yıl işlerse:
+
+| Yıl | Yıllık faiz | Toplam faiz | Toplam tutar |
+|---|---|---|---|
+| 1 | 40.000 ₺ | 40.000 ₺ | 140.000 ₺ |
+| 2 | 40.000 ₺ | 80.000 ₺ | 180.000 ₺ |
+| 3 | 40.000 ₺ | 120.000 ₺ | 220.000 ₺ |
+
+Her yıl aynı 40.000 ₺ eklenir, çünkü hesap hep başlangıçtaki 100.000 ₺ üzerinden yapılır.
+
+## Bileşik faiz
+
+Bileşik faizde kazanılan faiz anaparaya eklenir ve **bir sonraki dönem o da faiz kazanır**. Buna "faizin faizi" denir.
+
+Formül şudur:
+
+**Son tutar = Anapara × (1 + Oran)^Dönem**
+
+Aynı 100.000 ₺, yıllık %40 bileşik faizle 3 yıl:
+
+| Yıl | Dönem başı tutar | O yılın faizi | Dönem sonu tutar |
+|---|---|---|---|
+| 1 | 100.000 ₺ | 40.000 ₺ | 140.000 ₺ |
+| 2 | 140.000 ₺ | 56.000 ₺ | 196.000 ₺ |
+| 3 | 196.000 ₺ | 78.400 ₺ | 274.400 ₺ |
+
+Üç yılın sonunda aradaki fark **54.400 ₺**. Aynı oran, aynı anapara, aynı vade — tek fark faizin anaparaya eklenmesi.
+
+<Callout type="info">
+Bileşik faizde farkı yaratan şey oran değil, **vade**. İlk yıl iki yöntem arasında hiç fark yoktur; fark ikinci yıldan itibaren başlar ve her yıl hızlanır. Bu yüzden bileşik faiz uzun vadeli birikimde lehine, uzun vadeli borçta ise aleyhine çalışır.
+</Callout>
+
+### Dönem sıklığı da önemli
+
+Faizin yılda kaç kez anaparaya eklendiği sonucu değiştirir. Yıllık %40 oran, aylık olarak işletildiğinde yıl sonundaki getiri yıllık bileşikten yüksek çıkar. Bankaların "yıllık" ve "efektif yıllık" oranları farklı vermesinin sebebi budur: efektif oran, dönem sıklığını da hesaba katan gerçek getiridir.
+
+Karşılaştırma yaparken her zaman **efektif yıllık** orana bak — nominal oran tek başına yanıltıcıdır.
+
+## Politika faizi cebine nasıl ulaşır?
+
+Türkiye'de referans oran, Merkez Bankası'nın belirlediği **politika faizidir**. Şu an <Rakam id="politikaFaizi" /> seviyesinde.
+
+Bu oran doğrudan senin mevduat ya da kredi faizin değildir. Zinciri şöyle işler:
+
+1. Merkez Bankası politika faizini belirler.
+2. Bankaların birbirinden ve Merkez Bankası'ndan borçlanma maliyeti bu orana göre şekillenir.
+3. Bankalar bu maliyetin üzerine kendi kâr marjını, riskini ve rekabet koşullarını ekleyerek mevduat ve kredi faizlerini belirler.
+
+Bu yüzden politika faizi düştüğünde kredi faizin aynı gün düşmez; etki gecikmeli ve kısmi olur. Aktarımın nasıl işlediğini [faizin kredi ve mevduata etkisi](/ekonomi/faizin-kredi-ve-mevduata-etkisi) yazısında ayrıntılı ele aldık.
+
+## Nominal faiz yeterli değil: reel faiz
+
+Bir getiriyi değerlendirirken tek başına faiz oranına bakmak eksiktir. Asıl soru şudur: **paranın alım gücü arttı mı?**
+
+Yıllık enflasyon <Rakam id="tufeYillik" /> iken %30 faiz veren bir mevduat, nominal olarak kazandırır ama alım gücü olarak kaybettirir.
+
+Reel faiz doğru hesabı bölmeyle yapılır, çıkarmayla değil:
+
+**Reel faiz = ((1 + Nominal faiz) ÷ (1 + Enflasyon)) − 1**
+
+Kabaca bir fikir için çıkarma yeterlidir, ama oranlar büyüdükçe iki yöntem arasındaki fark açılır. Aynı mantığın maaş zammındaki hali için [enflasyonun maaşlara etkisi](/ekonomi/enflasyonun-maaslara-etkisi) yazısına bakabilirsin.
+
+<Callout type="warning">
+Bu yazıdaki örnekler faizin nasıl hesaplandığını göstermek içindir. Belirli bir mevduat, kredi ya da yatırım ürünü önerisi değildir. Güncel oranlar bankadan bankaya ve dönemden döneme değişir.
+</Callout>
+
+## Özet
+
+- Faiz, paranın belirli bir süre kullanılmasının bedelidir.
+- **Basit faiz** yalnızca ilk anapara üzerinden işler; her dönem aynı tutarı ekler.
+- **Bileşik faiz** kazanılan faizi anaparaya ekler; fark vade uzadıkça hızla büyür.
+- Karşılaştırmada **efektif yıllık oran** kullan; nominal oran dönem sıklığını göstermez.
+- **Politika faizi** referanstır, senin faizin değildir; bankalar üzerine kendi marjını ekler.
+- Getiriyi enflasyondan arındırmadan değerlendirme — önemli olan **reel** faizdir.
+
+<Disclaimer />

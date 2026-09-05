@@ -29,13 +29,15 @@ import Reveal from "@/components/Reveal";
 import Newsletter from "@/components/Newsletter";
 import SectionRow from "@/components/news/SectionRow";
 import FeedStrip from "@/components/news/FeedStrip";
+import EditorPicks from "@/components/news/EditorPicks";
 import MarketOverview from "@/components/market/MarketOverview";
 import UpcomingEvents from "@/components/market/UpcomingEvents";
 import Hero from "@/components/home/Hero";
 import FilesSection from "@/components/home/FilesSection";
+import HubGrid from "@/components/home/HubGrid";
 import { getPostSummaries, getFeaturedPosts, getCategoriesWithCounts } from "@/lib/posts";
 import { getRankedNews, getNewsBySection, activeSections } from "@/lib/news";
-import { getFeaturedFiles } from "@/lib/evergreen";
+import { getFeaturedFiles, getActiveHubs } from "@/lib/evergreen";
 import { resolveHero } from "@/lib/slots";
 import { getRecentFeedItems } from "@/lib/feed";
 import figures from "~/content/data/figures";
@@ -69,6 +71,25 @@ export default async function HomePage() {
     const items = getNewsBySection(slug).filter((n) => !shownSlugs.has(n.slug));
     return items.length > 0 ? { section, items } : null;
   }).filter(Boolean);
+
+  /* --------------------------------------------------------- ÖNE ÇIKANLAR */
+  /* Görüntülenme sayacı yok — popülerlik uydurmuyoruz. Liste editoryal
+     sinyalden kurulur: önce sabitlenmiş/önemli haberler, yetmezse sitenin
+     en güçlü kalıcı içerikleri (rehberler). bkz. EditorPicks başlığı. */
+  const pickItems = [
+    ...ranked.map((n) => ({
+      href: `/haber/${n.section.slug}/${n.slug}`,
+      title: n.title,
+      kicker: n.section?.shortName ?? n.section?.name,
+      publishedAt: n.publishedAt,
+    })),
+    ...getPostSummaries().map((p) => ({
+      href: `/blog/${p.slug}`,
+      title: p.title,
+      kicker: p.category?.name ?? "Rehber",
+      publishedAt: p.publishedAt ?? p.date,
+    })),
+  ].slice(0, 5);
 
   /* -------------------------------------------------------------- REHBER */
   const posts = getPostSummaries();
@@ -140,6 +161,13 @@ export default async function HomePage() {
         anlamlı bölümü gördükten SONRA, doğal bir ayrım noktasında çıkar.
       */}
       <div className="mx-auto max-w-7xl space-y-12 px-4 py-10 sm:px-6">
+        {/* ======================================= KONU BAŞLIKLARI (kategoriler)
+            Sitenin ne olduğunu ilk ekranda söyleyen blok. Dosyalardan ÖNCE
+            geliyor: önce "burada hangi konular var", sonra "işte en güçlü
+            içerikler". Tersi sırada kullanıcı önce örnekleri görüp yapıyı
+            sonra anlıyor. */}
+        <HubGrid hubs={getActiveHubs()} />
+
         {/* ========================================= PARANOTU DOSYALARI (§7) */}
         <FilesSection guides={getFeaturedFiles(6)} />
 
@@ -170,7 +198,13 @@ export default async function HomePage() {
           <UpcomingEvents />
         </Suspense>
 
-        {/* ================================================ I. PARA REHBERLERİ */}
+        {/* ===== I–J. ANA İÇERİK + EDİTORYAL YAN SÜTUN =====================
+            Alt yarı tek kolon bir yığındı; geniş ekranda sağda büyük boşluk
+            kalıyor ve sayfa "bitmiş" hissi vermiyordu. İki kolona alındı:
+            solda içerik, sağda yapışkan öne çıkanlar sütunu. Mobilde tek
+            kolona düşer ve yan sütun içeriğin ALTINA gider. */}
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-10">
+          <div className="flex min-w-0 flex-col gap-10">
         <Reveal as="section" aria-labelledby="rehberler">
           <div className="mb-4 flex items-baseline justify-between gap-4 border-b border-line pb-2">
             <h2 id="rehberler" className="text-xl font-bold tracking-tight text-ink">
@@ -265,6 +299,17 @@ export default async function HomePage() {
             ))}
           </div>
         </Reveal>
+
+          </div>
+
+          {/* Yan sütun — masaüstünde kaydırmada takip eder. */}
+          <aside className="lg:sticky lg:top-24 lg:self-start">
+            <EditorPicks
+              title={hasNewsContent ? "Öne çıkanlar" : "ParaNotu'nda öne çıkanlar"}
+              items={pickItems}
+            />
+          </aside>
+        </div>
 
         {siteConfig.features.newsletter ? (
           <Newsletter variant="inline" source="home" />

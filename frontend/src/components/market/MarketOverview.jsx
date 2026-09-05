@@ -15,6 +15,7 @@ import Link from "next/link";
 import { getGroupQuotes, hasData, ProviderStatus } from "@/lib/providers";
 import { formatQuoteValue } from "@/lib/format";
 import QuoteChange from "./QuoteChange";
+import EconomyIndicators from "./EconomyIndicators";
 import Reveal from "@/components/Reveal";
 
 const GROUPS = [
@@ -61,29 +62,29 @@ export default async function MarketOverview() {
         </Link>
       </div>
 
+      {/* Resmî göstergeler HER ZAMAN çizilir — canlı fiyatın alternatifi
+          değil, tamamlayıcısıdır. Sağlayıcı sonradan bağlandığında bu
+          rakamlar kaybolmaz; okur enflasyon ve faizi kurla birlikte görür. */}
+      <EconomyIndicators />
+
       {!anyData ? (
-        <div className="rounded-brand border border-dashed border-line bg-subtle/60 px-5 py-8">
-          <p className="text-sm font-medium text-ink">
-            {firstResult?.message ?? "Piyasa verisi kullanılamıyor."}
-          </p>
-          {firstResult?.status === ProviderStatus.UNCONFIGURED ? (
-            <p className="mt-1.5 max-w-xl text-sm leading-relaxed text-muted">
-              Piyasa verisi lisanslı bir sağlayıcı gerektirir. Sağlayıcı bağlandığında döviz,
-              altın ve endeks değerleri burada kaynağı ve gecikmesiyle birlikte görünecek. O
-              zamana kadar tahmini veya geçmiş değer göstermiyoruz.
-            </p>
-          ) : null}
-        </div>
+        /* Sahte fiyat ÜRETMEYİZ. Sağlayıcı yokken beklentiyi dürüstçe
+           yönetiriz — yukarıdaki gerçek rakamlar sayfayı zaten doldurur. */
+        <p className="mt-3 text-xs leading-relaxed text-muted">
+          {firstResult?.status === ProviderStatus.UNCONFIGURED
+            ? "Anlık döviz, altın ve endeks değerleri lisanslı bir veri sağlayıcısı gerektirir. Sağlayıcı bağlandığında bu alanda kaynağı ve gecikmesiyle birlikte görünecek; o zamana kadar tahmini veya geçmiş fiyat göstermiyoruz."
+            : (firstResult?.message ?? "Piyasa verisi şu an kullanılamıyor.")}
+        </p>
       ) : (
         <>
           {results.some((r) => r.result.isMock) ? (
-            <p className="mb-3 inline-flex items-center gap-1.5 rounded-brand bg-gold-50 px-2 py-1 text-xs font-medium text-gold-800">
+            <p className="mt-4 inline-flex items-center gap-1.5 rounded-brand bg-gold-50 px-2 py-1 text-xs font-medium text-gold-800">
               <span aria-hidden="true">⚠</span>
               Geliştirme verisi — gerçek piyasa değeri değildir.
             </p>
           ) : null}
 
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {results.map(({ slug, label, result }) => (
               <div key={slug} className="rounded-brand border border-line bg-canvas p-4">
                 <h3 className="text-xs font-bold uppercase tracking-wide text-muted">{label}</h3>
