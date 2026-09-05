@@ -25,6 +25,7 @@ import Link from "next/link";
 import { getTickerQuotes, hasData, ProviderStatus } from "@/lib/providers";
 import { formatQuoteValue, formatTime } from "@/lib/format";
 import QuoteChange from "./QuoteChange";
+import WeatherChip from "@/components/WeatherChip";
 
 function DataNotice({ result }) {
   return (
@@ -116,6 +117,13 @@ export default async function MarketTicker() {
                 <span className="max-w-[10rem] truncate">Kaynak: {result.source.name}</span>
               ) : null}
               {result.fetchedAt ? <span>Güncelleme {formatTime(result.fetchedAt)}</span> : null}
+            </div>
+
+            {/* Hava durumu — bandın en sağında, sessiz bir dokunuş.
+                `shrink-0` ile bant kaydırılırken sabit kalır; veri gelmezse
+                bileşen null döner ve ayırıcı çizgi de çizilmez. */}
+            <div className="hidden shrink-0 items-center border-l border-chrome-line/70 px-4 md:flex">
+              <WeatherChip />
             </div>
           </div>
         )}
