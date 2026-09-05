@@ -1,0 +1,133 @@
+---
+title: "Mevduat Faizi Nasıl Hesaplanır?"
+summary: "Bankanın verdiği brüt oran ile hesabına geçen net tutar neden farklıdır? Vadeli mevduatta faiz hesabının formülünü, gün sayısının etkisini ve stopajın nasıl kesildiğini adım adım gösteriyoruz."
+seoTitle: "Mevduat Faizi Nasıl Hesaplanır? Brüt, Net ve Stopaj"
+seoDescription: "Vadeli mevduat faizi nasıl hesaplanır? Brüt ve net faiz farkı, stopaj kesintisi, gün sayısının etkisi ve bileşik getiri örnekleri."
+keywords:
+  - "mevduat faizi hesaplama"
+  - "vadeli mevduat faizi"
+  - "brüt net faiz farkı"
+  - "mevduat stopajı"
+  - "faiz getirisi hesaplama"
+
+publishedAt: 2026-09-05
+updatedAt: 2026-09-05
+nextReviewAt: 2026-12-05
+updateTrigger: tcmb_ppk
+freshnessStatus: current
+
+author: editor
+isFile: true
+filePriority: 20
+schemaType: Article
+
+related:
+  - "ekonomi/faiz-nedir"
+  - "ekonomi/faizin-kredi-ve-mevduata-etkisi"
+
+faq:
+  - q: "Mevduat faizi nasıl hesaplanır?"
+    a: "Brüt faiz, anaparanın yıllık faiz oranıyla çarpılıp vade gün sayısına oranlanmasıyla bulunur. Formül şudur: anapara × yıllık oran × (vade günü ÷ 365). Bulunan brüt tutardan stopaj kesildikten sonra kalan tutar hesaba geçer."
+  - q: "Brüt faiz ile net faiz arasındaki fark nedir?"
+    a: "Brüt faiz, kesinti yapılmadan önceki getiridir. Net faiz ise stopaj kesildikten sonra elinize geçen tutardır. Bankaların ilan ettiği oran genellikle brüttür, bu yüzden hesabınıza yatan tutar daha düşük olur."
+  - q: "Mevduat faizinden stopaj kesilir mi?"
+    a: "Evet. Türk lirası vadeli mevduat faizi gelir vergisi stopajına tabidir. Oran vadeye göre değişir ve mevzuat değişiklikleriyle güncellenir; işlem öncesi bankanızdan güncel oranı teyit etmelisiniz."
+  - q: "Vade uzadıkça faiz getirisi artar mı?"
+    a: "Getiri tutarı vade uzadıkça artar çünkü para daha uzun süre işler. Ancak yıllık oran her vadede aynı olmayabilir; bankalar farklı vadelere farklı oran verir. Karşılaştırmayı yıllık orana çevirerek yapmak gerekir."
+
+sources:
+  - name: "TCMB — Mevduat Faiz Oranları İstatistikleri"
+    url: "https://www.tcmb.gov.tr/"
+    kind: official
+  - name: "Gelir İdaresi Başkanlığı — Menkul Sermaye İratları"
+    url: "https://www.gib.gov.tr/"
+    kind: official
+---
+
+Vadeli mevduatta en sık karşılaşılan şaşkınlık şudur: banka **%45 faiz** diyor, vade sonunda hesaba giren tutar beklenenden düşük çıkıyor. Sebep hesap hatası değil — ilan edilen oranın **brüt** ve **yıllık** olmasıdır.
+
+Bu yazıda mevduat faizinin nasıl hesaplandığını, gün sayısının neden önemli olduğunu ve brütten nete geçerken neyin kesildiğini sırayla ele alıyoruz.
+
+<RakamTablosu ids={["politikaFaizi", "tufeYillik"]} />
+
+## Temel formül
+
+Vadeli mevduatta brüt faiz şöyle hesaplanır:
+
+**Brüt faiz = Anapara × Yıllık oran × (Vade günü ÷ 365)**
+
+Formüldeki üçüncü çarpan kritik: **ilan edilen oran yıllıktır**. 32 günlük bir mevduatta yıllık oranın tamamını değil, yılın 32/365'ine düşen kısmını alırsın.
+
+100.000 ₺'yi yıllık %45 brüt oranla 32 gün vadeye koyalım:
+
+100.000 × 0,45 × (32 ÷ 365) = **3.945,21 ₺ brüt faiz**
+
+Yıllık %45 kulağa büyük gelir ama 32 günde karşılığı yaklaşık %3,95'tir.
+
+<Callout type="info">
+Bazı bankalar hesaplamada 365 yerine 360 gün kullanır. Fark küçüktür ama vardır — sözleşmede hangi gün sayısının esas alındığına bakmakta fayda var.
+</Callout>
+
+## Vade gün sayısının etkisi
+
+Aynı anapara ve aynı yıllık oranla farklı vadeler:
+
+| Vade | Hesap | Brüt faiz |
+|---|---|---|
+| 32 gün | 100.000 × 0,45 × 32/365 | 3.945,21 ₺ |
+| 92 gün | 100.000 × 0,45 × 92/365 | 11.342,47 ₺ |
+| 180 gün | 100.000 × 0,45 × 180/365 | 22.191,78 ₺ |
+| 365 gün | 100.000 × 0,45 × 365/365 | 45.000,00 ₺ |
+
+Tabloda oran her satırda aynıdır; değişen tek şey paranın işlediği süredir.
+
+<Callout type="warning">
+Bankalar her vadeye aynı oranı vermez. Kısa vadeye yüksek, uzun vadeye düşük oran verilen dönemler de olur, tersi de. Bu yüzden farklı vadeleri karşılaştırırken tutara değil, **yıllık orana** bakmak gerekir.
+</Callout>
+
+## Brütten nete: stopaj
+
+Hesaplanan brüt faiz doğrudan hesabına geçmez. Türk lirası mevduat faizi **gelir vergisi stopajına** tabidir; banka bu kesintiyi kaynağında yapar ve sana net tutarı verir.
+
+**Net faiz = Brüt faiz − (Brüt faiz × Stopaj oranı)**
+
+Yukarıdaki 32 günlük örnekte brüt faiz 3.945,21 ₺ idi. Stopaj oranının %15 olduğu bir senaryoda:
+
+| Kalem | Tutar |
+|---|---|
+| Brüt faiz | 3.945,21 ₺ |
+| Stopaj (%15) | 591,78 ₺ |
+| **Net faiz** | **3.353,43 ₺** |
+| Vade sonu toplam | 103.353,43 ₺ |
+
+<Callout type="warning">
+Buradaki %15 yalnızca **hesabın nasıl işlediğini göstermek için seçilmiş örnek bir orandır.** Mevduat stopaj oranları vadeye göre farklılaşır ve mevzuat değişiklikleriyle güncellenir. Kendi hesabını yaparken güncel oranı bankandan veya Gelir İdaresi Başkanlığı'ndan teyit et — bu yazıdaki örnek oranı kullanma.
+</Callout>
+
+## Vade yenilendiğinde: bileşik etki
+
+Vade sonunda anaparayı ve net faizi birlikte yeniden vadeye koyarsan, ikinci dönemde faiz **büyümüş anapara** üzerinden işler. Bu, [bileşik faizin](/ekonomi/faiz-nedir) mevduattaki halidir.
+
+Yalnız faizi çekip anaparayı yenilersen bileşik etki oluşmaz; her dönem aynı anapara üzerinden hesap yapılır.
+
+## Getiriyi doğru okumak: reel faiz
+
+Net faizi bulmak hesabın yarısıdır. Asıl soru, paranın **alım gücünün** artıp artmadığıdır.
+
+Yıllık enflasyon <Rakam id="tufeYillik" /> iken bunun altında kalan bir yıllık mevduat getirisi, nominal olarak kazandırırken alım gücü olarak kaybettirir.
+
+**Reel getiri = ((1 + Net yıllık getiri) ÷ (1 + Enflasyon)) − 1**
+
+Politika faizinin mevduat oranlarına hangi gecikmeyle yansıdığını [faizin kredi ve mevduata etkisi](/ekonomi/faizin-kredi-ve-mevduata-etkisi) yazısında ele aldık.
+
+## Özet
+
+- Brüt faiz = **anapara × yıllık oran × (vade günü ÷ 365)**.
+- İlan edilen oran **yıllıktır**; kısa vadede karşılığı orantılı olarak düşer.
+- Bankaların bir kısmı 360 gün esası kullanır — sözleşmeye bak.
+- Brütten **stopaj** kesilir; hesabına geçen net tutardır.
+- Stopaj oranı vadeye göre değişir ve güncellenir; **işlem öncesi teyit et**.
+- Anaparayla birlikte faizi de yenilersen **bileşik etki** oluşur.
+- Getiriyi enflasyona karşı ölç — önemli olan **reel** getiridir.
+
+<Disclaimer />

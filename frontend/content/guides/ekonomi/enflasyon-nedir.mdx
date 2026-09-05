@@ -1,0 +1,125 @@
+---
+title: "Enflasyon Nedir, Nasıl Hesaplanır?"
+summary: "Enflasyon, paranın alım gücünün zaman içinde azalmasıdır. TÜİK'in enflasyonu nasıl ölçtüğünü, sepet mantığını, yıllık ve aylık enflasyon farkını ve kendi enflasyonunun neden resmî rakamdan farklı olabileceğini anlatıyoruz."
+seoTitle: "Enflasyon Nedir, Nasıl Hesaplanır? TÜFE ve Sepet Mantığı"
+seoDescription: "Enflasyon nedir, nasıl hesaplanır? TÜFE sepeti, yıllık ve aylık enflasyon farkı, çekirdek enflasyon ve kişisel enflasyonun neden farklı olduğu."
+keywords:
+  - "enflasyon nedir"
+  - "enflasyon nasıl hesaplanır"
+  - "tüfe nedir"
+  - "yıllık enflasyon"
+  - "çekirdek enflasyon"
+
+publishedAt: 2026-09-05
+updatedAt: 2026-09-05
+nextReviewAt: 2026-10-05
+updateTrigger: tuik_tufe
+freshnessStatus: current
+
+author: editor
+isFile: true
+filePriority: 5
+schemaType: Article
+
+related:
+  - "ekonomi/faiz-nedir"
+  - "ekonomi/enflasyonun-maaslara-etkisi"
+
+faq:
+  - q: "Enflasyon nedir?"
+    a: "Enflasyon, mal ve hizmet fiyatlarının genel seviyesinin zaman içinde sürekli olarak yükselmesidir. Sonucu, aynı parayla daha az şey alabilmektir; yani paranın alım gücü azalır."
+  - q: "Enflasyon nasıl hesaplanır?"
+    a: "Türkiye'de TÜİK, hanelerin tükettiği yüzlerce ürün ve hizmetten oluşan bir sepetin fiyatını her ay ölçer. Sepetin bugünkü toplam maliyeti ile geçmişteki maliyeti karşılaştırılır; aradaki yüzde değişim enflasyon oranını verir."
+  - q: "Yıllık enflasyon ile aylık enflasyon arasındaki fark nedir?"
+    a: "Aylık enflasyon, fiyatların bir önceki aya göre değişimidir. Yıllık enflasyon ise bir önceki yılın aynı ayına göre değişimi gösterir. Yıllık oran on iki aylık birikimi yansıttığı için genellikle daha yüksektir."
+  - q: "Benim enflasyonum neden resmî enflasyondan farklı?"
+    a: "Resmî oran, ortalama bir hanenin harcama dağılımına göre hesaplanır. Senin harcamaların bu ortalamadan farklıysa, örneğin gelirinin büyük kısmını kiraya veya ulaşıma harcıyorsan, hissettiğin enflasyon resmî rakamdan yüksek veya düşük olabilir."
+
+sources:
+  - name: "TÜİK — Tüketici Fiyat Endeksi Haber Bülteni"
+    url: "https://data.tuik.gov.tr/Bulten/Index?p=Tuketici-Fiyat-Endeksi"
+    kind: official
+  - name: "TCMB — Enflasyon Raporu"
+    url: "https://www.tcmb.gov.tr/"
+    kind: official
+---
+
+Enflasyon, tek bir ürünün pahalanması değildir. **Fiyatların genel seviyesinin sürekli yükselmesidir.** Domates mevsim sonu pahalandığında bu enflasyon değildir; ekmek, kira, ulaşım, giyim ve elektrik birlikte ve kalıcı biçimde yükseldiğinde enflasyondan söz ederiz.
+
+Sonucu tek cümleyle şudur: **aynı parayla daha az şey alabilirsin.**
+
+<RakamTablosu ids={["tufeYillik", "tufeAylik", "cekirdekYillik"]} />
+
+## Enflasyon nasıl ölçülür?
+
+Türkiye'de tüketici enflasyonunu **TÜİK** ölçer ve her ayın başında açıklar. Yöntem kabaca şudur:
+
+1. **Sepet kurulur.** Hanelerin tükettiği yüzlerce ürün ve hizmet belirlenir: gıda, kira, ulaşım, sağlık, eğitim, giyim, iletişim ve diğerleri.
+2. **Ağırlık verilir.** Her kalem sepette, hanelerin bütçesinden aldığı paya göre ağırlıklandırılır. Kira, ortalama bir hanenin harcamasında pul fiyatından çok daha büyük yer tuttuğu için endekse etkisi de büyüktür.
+3. **Fiyatlar toplanır.** Aynı ürünlerin fiyatları ülke genelinde binlerce noktadan derlenir.
+4. **Karşılaştırılır.** Sepetin bu ayki toplam maliyeti, geçen ayki ve geçen yılın aynı ayındaki maliyetiyle karşılaştırılır.
+
+Aradaki yüzde değişim, enflasyon oranıdır.
+
+<Callout type="info">
+Enflasyon **tek bir ürünün** değil, **sepetin tamamının** değişimidir. Bu yüzden bazı kalemler ucuzlarken enflasyon yine de pozitif çıkabilir: ucuzlayanların ağırlığı, pahalananlardan küçüktür.
+</Callout>
+
+## Aylık, yıllık ve çekirdek
+
+Üç farklı oran duyarsın ve üçü farklı soruyu yanıtlar.
+
+| Ölçüm | Neyi karşılaştırır | Ne işe yarar |
+|---|---|---|
+| **Aylık** | Bu ay ile geçen ay | Kısa vadeli hız; eğilim değişimini erken gösterir |
+| **Yıllık** | Bu ay ile geçen yılın aynı ayı | Birikimli etki; maaş ve kira görüşmelerinin referansı |
+| **Çekirdek** | Gıda, enerji, alkol-tütün ve altın hariç sepet | Geçici dalgalanmayı ayıklar; kalıcı eğilimi gösterir |
+
+Şu an yıllık enflasyon <Rakam id="tufeYillik" />, aylık <Rakam id="tufeAylik" />, çekirdek <Rakam id="cekirdekYillik" /> seviyesinde.
+
+**Çekirdek neden ayrı ölçülür?** Gıda hava koşullarına, enerji küresel fiyatlara göre sert biçimde oynar. Bu kalemler bir ay fırlayıp ertesi ay geri gelebilir. Çekirdek enflasyon, bu gürültüyü çıkarıp fiyat artışının "yapışkan" kısmını gösterir — politika yapıcılar bu yüzden ona ayrıca bakar.
+
+## Enflasyon neden yükselir?
+
+Tek bir sebep yoktur; genellikle birkaçı aynı anda çalışır.
+
+- **Talep kaynaklı** — insanların harcayabileceği para, üretilen mal miktarından hızlı artarsa fiyatlar yükselir.
+- **Maliyet kaynaklı** — üretim girdileri (enerji, hammadde, işçilik, ithal ara mal) pahalanırsa maliyet fiyata yansır.
+- **Kur kaynaklı** — ithal girdi kullanan bir ekonomide kur yükselince maliyetler artar. Türkiye'de bu kanal güçlüdür; ayrıntısı [dolar kurunu etkileyen faktörler](/doviz/dolar-kurunu-etkileyen-faktorler) yazısında.
+- **Beklenti kaynaklı** — herkes fiyatların artacağını düşünürse, satıcı önden zam yapar, çalışan yüksek zam ister. Beklenti kendi kendini gerçekleştirir.
+
+## Enflasyona karşı ne yapılır?
+
+Merkez Bankası'nın temel aracı **politika faizidir**. Faiz yükseltildiğinde borçlanma pahalanır, harcama ve kredi talebi yavaşlar, fiyat baskısı azalır. Etki anında olmaz — genellikle birkaç çeyrek gecikmeyle görülür.
+
+Şu anki politika faizi <Rakam id="politikaFaizi" />. Bu oranın krediye ve mevduata nasıl yansıdığını [faizin kredi ve mevduata etkisi](/ekonomi/faizin-kredi-ve-mevduata-etkisi) yazısında ele aldık; faizin kendisinin nasıl işlediğini ise [faiz nedir](/ekonomi/faiz-nedir) yazısında.
+
+## "Benim enflasyonum" neden farklı?
+
+Resmî oran **ortalama bir hanenin** sepetine göre hesaplanır. Senin harcama dağılımın o ortalamadan farklıysa, hissettiğin enflasyon da farklı olur.
+
+Örneğin geliri büyük ölçüde kiraya giden bir kiracı için kira artışı, sepetteki ağırlığından çok daha belirleyicidir. Aynı ay içinde iki kişi aynı ülkede yaşayıp çok farklı enflasyon hissedebilir — ikisi de haklıdır.
+
+<Callout type="warning">
+Resmî enflasyonun "yanlış" olduğu anlamına gelmez. Ortalama bir ölçüdür ve ortalamalar hiç kimseyi birebir tarif etmez. Kendi durumunu görmek için kendi harcama dağılımına bakman gerekir.
+</Callout>
+
+## Enflasyon ve senin bütçen
+
+Enflasyonun cebine iki yoldan dokunur:
+
+- **Gelir tarafı** — zammın enflasyonun altında kaldıysa reel olarak fakirleşirsin. Hesabı [enflasyonun maaşlara etkisi](/ekonomi/enflasyonun-maaslara-etkisi) yazısında adım adım gösterdik.
+- **Birikim tarafı** — paran enflasyonun altında getiri sağlıyorsa, nominal olarak artarken alım gücü olarak azalır.
+
+Harcama tarafını planlamak için [40-40-20 kuralı](/kisisel-finans/40-40-20-kurali) gibi bir çerçeve işe yarar; enflasyon dönemlerinde bütçeyi yılda bir değil, birkaç ayda bir gözden geçirmek gerekir.
+
+## Özet
+
+- Enflasyon, **sepetin tamamının** sürekli pahalanmasıdır; tek ürünün zammı değildir.
+- TÜİK, ağırlıklandırılmış bir tüketim sepetinin maliyetini ölçerek hesaplar.
+- **Aylık** kısa vadeli hızı, **yıllık** birikimli etkiyi, **çekirdek** kalıcı eğilimi gösterir.
+- Talep, maliyet, kur ve beklenti — dördü birden çalışabilir.
+- Temel politika aracı **faizdir**; etkisi gecikmelidir.
+- Kişisel enflasyonun resmî orandan farklı olabilir; sebep harcama dağılımındır.
+
+<Disclaimer />
