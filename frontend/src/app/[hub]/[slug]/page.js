@@ -19,12 +19,13 @@ import MdxContent from "@/components/mdx/MdxContent";
 import ShareButtons from "@/components/ShareButtons";
 import TableOfContents from "@/components/TableOfContents";
 import GuideMeta from "@/components/guides/GuideMeta";
+import FaqSection from "@/components/guides/FaqSection";
 import { ContentEndAdSlot, SidebarAdSlot } from "@/components/ads";
 import siteConfig from "~/site.config";
 import { getGuide, getAllGuideParams, getGuidesByHub } from "@/lib/evergreen";
 import { extractHeadings } from "@/lib/posts";
 import { formatDate } from "@/lib/format";
-import { buildMetadata, JsonLd, breadcrumbJsonLd } from "@/lib/seo";
+import { buildMetadata, JsonLd, breadcrumbJsonLd, faqJsonLd } from "@/lib/seo";
 import { evergreenIndexability, resolveRobots } from "@/lib/indexability";
 import { absoluteUrl } from "@/lib/format";
 
@@ -93,9 +94,35 @@ export default async function GuidePage({ params }) {
       : {}),
   };
 
+  const faqSchema = faqJsonLd(guide.faq);
+
+  /* Kürasyonlu ilgili içerikler: frontmatter'daki "<hub>/<slug>" dizesi
+     gerçek rehbere çözülür. Var olmayan hedef sessizce düşer — henüz
+     yazılmamış bir yazıya link vermek 404 üretmesin diye. */
+  const curated = (guide.related ?? [])
+    .map((ref) => {
+      const [h, sl] = String(ref).split("/");
+      return h && sl ? getGuide(h, sl) : null;
+    })
+    .filter(Boolean);
+
+  /*
+   * GENİŞLİK — 7xl (haber şablonuyla aynı).
+   * Daha önce 4xl (896px) idi. İçeride üç kolon var: sol içindekiler
+   * (224px) + gövde + sağ reklam sütunu (300px) + boşluklar (~80px).
+   * 896px kapta gövdeye ~290px kalıyordu; geniş ekranda metin telefon
+   * genişliğinde dar bir şeride sıkışıyordu. 7xl'de gövde ~628px (≈68ch)
+   * olur — hedeflenen okuma genişliği.
+   *
+   * ⚠️ Bu kabı daraltacaksan sağdaki reklam sütununu da kaldır; ikisi
+   * birlikte sığmıyor.
+   */
   return (
-    <article className="mx-auto max-w-4xl px-4 py-8 sm:px-6">
+    <article className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
       <JsonLd data={articleSchema} />
+      {/* FAQ şeması yalnızca frontmatter'da faq varsa basılır; aşağıda
+          <FaqSection /> ile sayfada da GÖRÜNÜYOR — Google'ın şartı bu. */}
+      {faqSchema ? <JsonLd data={faqSchema} /> : null}
       <JsonLd
         data={breadcrumbJsonLd([
           { name: "Ana Sayfa", path: "/" },
@@ -104,13 +131,13 @@ export default async function GuidePage({ params }) {
         ])}
       />
 
-      <nav aria-label="Konum" className="text-xs text-muted">
+      <nav aria-label="Konum" className="mx-auto max-w-[72ch] text-xs text-muted">
         <Link href="/" className="inline-flex min-h-6 items-center hover:text-link">Ana Sayfa</Link>
         <span aria-hidden="true" className="mx-1.5">/</span>
         <Link href={`/${guide.hub.slug}`} className="inline-flex min-h-6 items-center hover:text-link">{guide.hub.name}</Link>
       </nav>
 
-      <header className="mt-3">
+      <header className="mx-auto mt-3 max-w-[72ch]">
         <p className="text-xs font-semibold uppercase tracking-wide text-accent-700">
           ParaNotu Dosyası
         </p>
@@ -131,7 +158,7 @@ export default async function GuidePage({ params }) {
       </header>
 
       {/* Tarihler ve kaynaklar — sayfanın üstünde, görünür (spec §1-C). */}
-      <div className="mt-6">
+      <div className="mx-auto mt-6 max-w-[72ch]">
         <GuideMeta guide={guide} />
       </div>
 
@@ -202,6 +229,32 @@ export default async function GuidePage({ params }) {
           <SidebarAdSlot sticky />
         </aside>
       </div>
+
+      <FaqSection faq={guide.faq} />
+
+      {/* Kürasyonlu ilgili içerikler — kategoriler ARASI bağ kurar.
+          Aynı kategoriden gelen "dosyalar" listesi bunun altında ayrıca
+          duruyor; ikisi farklı işe yarar. */}
+      {curated.length > 0 ? (
+        <section aria-labelledby="ilgili-icerikler" className="mt-12 border-t border-line pt-8">
+          <h2 id="ilgili-icerikler" className="mb-4 text-lg font-bold tracking-tight text-ink">
+            Bunları da okuyabilirsin
+          </h2>
+          <ul className="grid gap-3 sm:grid-cols-2">
+            {curated.map((g) => (
+              <li key={g.href}>
+                <Link href={g.href} className="card-lift block rounded-brand border border-line bg-canvas p-4">
+                  <span className="text-[11px] font-semibold uppercase tracking-wide text-accent-700">
+                    {g.hub.name}
+                  </span>
+                  <span className="mt-0.5 block text-base font-semibold text-ink">{g.title}</span>
+                  <span className="clamp-2 mt-1 block text-sm text-muted">{g.summary}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       {siblings.length > 0 ? (
         <section aria-labelledby="ilgili-dosyalar" className="mt-12 border-t border-line pt-8">
