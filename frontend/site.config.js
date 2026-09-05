@@ -451,6 +451,10 @@ const siteConfig = {
   features: {
     newsletter: false,     // Bülten aboneliği (.NET API) — backend yayına alınınca true yap
     comments: false,       // Yorumlar (.NET API)
+    contactForm: false,    // İletişim formu (.NET API) — backend yayına alınınca true yap.
+                           //   Kapalıyken /iletisim yalnızca e-posta adresi gösterir.
+                           //   Backend olmadan form gönderimi "Mesaj gönderilemedi"
+                           //   hatasıyla biter; bozuk form göstermek yerine gizliyoruz.
     liveRates: false,      // Canlı döviz/altın kuru widget'ı — backend yayına alınınca true yap
     readingTime: true,
     tableOfContents: true,
