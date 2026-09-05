@@ -47,46 +47,52 @@ const GUIDES_DIR = path.join(process.cwd(), "content", "guides");
  */
 export const HUBS = [
   {
-    slug: "asgari-ucret",
-    name: "Asgari Ücret",
+    slug: "ekonomi",
+    name: "Ekonomi",
     description:
-      "Güncel asgari ücret, işverene maliyeti ve ara zam tartışmaları — resmî rakamlarla.",
+      "Enflasyon, faiz, merkez bankaları ve makro göstergeler — rakamların ne anlama geldiği.",
   },
   {
-    slug: "faiz",
-    name: "Faiz",
+    slug: "yatirim",
+    name: "Yatırım",
     description:
-      "TCMB faiz kararlarının kredi, mevduat ve bütçen üzerindeki etkisi.",
-  },
-  {
-    slug: "enflasyon",
-    name: "Enflasyon",
-    description: "Enflasyonun maaşlara, birikime ve alım gücüne etkisi.",
-  },
-  {
-    slug: "butce",
-    name: "Bütçe",
-    description: "Bütçe kurma yöntemleri ve harcama planlama rehberleri.",
+      "Fon, ETF, temettü, portföy ve risk — yatırım araçlarının nasıl çalıştığı.",
   },
   {
     slug: "altin",
     name: "Altın",
-    description: "Gram altın ve ons altını etkileyen faktörler.",
+    description:
+      "Gram, ons, ayar ve milyem hesapları; altın fiyatını belirleyen etkenler.",
   },
   {
     slug: "doviz",
     name: "Döviz",
-    description: "Dolar ve euro kurunu etkileyen gelişmeler.",
+    description:
+      "Dolar, euro ve kur mekanizması — kurun neye göre hareket ettiği.",
   },
   {
-    slug: "emekli",
-    name: "Emekli",
-    description: "Emekli maaşı, zam oranları ve refah payı.",
+    slug: "borsa",
+    name: "Borsa",
+    description:
+      "Borsa İstanbul, hisse senedi, endeks ve temel analiz kavramları.",
   },
   {
     slug: "kredi",
-    name: "Kredi",
-    description: "Kredi faizleri, taksit hesabı ve borç yönetimi.",
+    name: "Kredi ve Bankacılık",
+    description:
+      "Kredi türleri, faiz hesabı, kredi notu, kredi kartı ve mevduat.",
+  },
+  {
+    slug: "kisisel-finans",
+    name: "Kişisel Finans",
+    description:
+      "Bütçe, birikim, borç yönetimi, maaş ve asgari ücret hesapları.",
+  },
+  {
+    slug: "vergi",
+    name: "Vergi",
+    description:
+      "KDV, ÖTV, gelir vergisi, stopaj ve yatırım kazançlarının vergilendirilmesi.",
   },
 ];
 
@@ -160,6 +166,30 @@ function parseGuideFile({ hub, file }) {
     /* Kaynaklar zorunlu — indexability kapısı bunu kontrol ediyor. */
     sources: Array.isArray(data.sources) ? data.sources : [],
     revisions: Array.isArray(data.revisions) ? data.revisions : [],
+
+    /**
+     * İLGİLİ İÇERİKLER — elle kürasyon.
+     * Biçim: ["ekonomi/faiz-nedir", "altin/gram-altin-nasil-hesaplanir"]
+     * yani "<hub>/<slug>". Boş bırakılırsa aynı kategoriden son yazılara
+     * düşülür; yazar bilinçli seçim yapmak istediğinde burayı doldurur.
+     *
+     * Neden otomatik değil? 120 yazılık bir bilgi ağında "aynı kategori"
+     * yeterli sinyal değil: "Faiz nedir" yazısının en değerli komşusu
+     * Ekonomi'deki rastgele bir yazı değil, Kredi'deki "Kredi faizi nasıl
+     * hesaplanır" olabilir. Kategoriler arası bağ ancak elle kurulur.
+     */
+    related: Array.isArray(data.related) ? data.related : [],
+
+    /**
+     * SIK SORULAN SORULAR — FAQPage şemasını besler.
+     * Biçim: [{ q: "...", a: "..." }]
+     * "... nedir?" tipi içeriklerde Google'ın öne çıkan sonuçlarında
+     * görünme şansını artırır. Cevaplar KISA ve kendi başına anlamlı
+     * olmalı; şemaya düz metin olarak gider, markdown render EDİLMEZ.
+     */
+    faq: Array.isArray(data.faq)
+      ? data.faq.filter((x) => x && x.q && x.a).map((x) => ({ q: String(x.q), a: String(x.a) }))
+      : [],
 
     /**
      * Görsel — kredi VE lisans zorunlu.

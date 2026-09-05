@@ -21,6 +21,57 @@ const nextConfig = {
         destination: "/ekonomik-takvim",
         permanent: true,
       },
+
+      /* ----------------------------------------------------------------
+         KATEGORİ YENİDEN YAPILANMASI
+         ----------------------------------------------------------------
+         Site haber odaklıdan evergreen finans bilgi merkezine geçti.
+         Hub'lar 8 ana kategoriye indirildi; `enflasyon` ve `faiz` konu
+         olarak Ekonomi'ye, `butce` ve `asgari-ucret` Kişisel Finans'a
+         taşındı. `altin`, `doviz` ve `kredi` yerinde kaldı — onlar için
+         yönlendirme YOK, çünkü URL değişmedi.
+
+         ⚠️ Not: `permanent: true` Next'te 301 değil 308 üretir (istek
+         metodunu koruyan kalıcı yönlendirme). Google bunu 301'e denk
+         sayar; SEO değeri aktarılır.
+         ---------------------------------------------------------------- */
+
+      /* Tekil rehberler — slug'lar da konuyu taşıyacak şekilde netleşti. */
+      {
+        source: "/enflasyon/maaslara-etkisi",
+        destination: "/ekonomi/enflasyonun-maaslara-etkisi",
+        permanent: true,
+      },
+      {
+        source: "/faiz/kredi-ve-mevduata-etkisi",
+        destination: "/ekonomi/faizin-kredi-ve-mevduata-etkisi",
+        permanent: true,
+      },
+      {
+        source: "/butce/40-40-20-kurali",
+        destination: "/kisisel-finans/40-40-20-kurali",
+        permanent: true,
+      },
+      {
+        source: "/asgari-ucret/guncel-asgari-ucret",
+        destination: "/kisisel-finans/guncel-asgari-ucret",
+        permanent: true,
+      },
+      {
+        source: "/asgari-ucret/ara-zam-olacak-mi",
+        destination: "/kisisel-finans/ara-zam-olacak-mi",
+        permanent: true,
+      },
+
+      /* Kapanan hub sayfalarının kendisi. `/enflasyon` BURADA YOK —
+         o adres bağımsız bir veri sayfası olarak yaşamaya devam ediyor
+         (src/app/enflasyon/page.js). Statik route dinamik route'u yener,
+         çakışma olmaz. */
+      { source: "/faiz", destination: "/ekonomi", permanent: true },
+      { source: "/butce", destination: "/kisisel-finans", permanent: true },
+      { source: "/asgari-ucret", destination: "/kisisel-finans", permanent: true },
+      /* `emekli` hub'ı hiç içerik almadı; yine de indekslenmiş olabilir. */
+      { source: "/emekli", destination: "/kisisel-finans", permanent: true },
     ];
   },
 
